@@ -38,10 +38,12 @@ for i in students:
 
 # --- Display Full Graph for Professor ---
 with st.expander("🔍 Full Student Graph"):
-    st.subheader("Full Graph of All Students")
-    fig_full, ax_full = plt.subplots(figsize=(6, 6))
+    st.subheader("Graph of All Students and Their Connections")
+    fig_full, ax_full = plt.subplots(figsize=(8, 8))
     pos_full = nx.spring_layout(G_full, seed=42)
-    nx.draw(G_full, pos_full, node_size=40, node_color='lightblue', with_labels=False, ax=ax_full)
+    nx.draw(G_full, pos_full, node_size=300, node_color='lightblue', with_labels=True, font_size=8, ax=ax_full)
+    edge_labels = nx.get_edge_attributes(G_full, 'weight')
+    nx.draw_networkx_edge_labels(G_full, pos_full, edge_labels={k: f"{v:.2f}" for k, v in edge_labels.items()}, font_size=6, ax=ax_full)
     ax_full.set_axis_off()
     st.pyplot(fig_full)
 
@@ -57,31 +59,35 @@ if role == "Driver":
         dists = dists[dists <= MAX_DIST]
         nearest = dists.nsmallest(3)
 
-        st.subheader("Suggested Riders (closest first)")
+        st.subheader("Suggested Riders (Closest First)")
+        accepted_riders = st.session_state.accepted_riders.get(driver, [])
+
         for name, km in nearest.items():
-            cols = st.columns([4, 1])
-            cols[0].write(f"**{name}** — {km:.2f} km")
-            if cols[1].button("Accept", key=f"accept_{name}"):
-                st.session_state.accepted_riders.setdefault(driver, []).append(name)
-                st.session_state.active_drivers.setdefault(driver, []).append(name)
-                st.success(f"Accepted {name}")
+            if name not in accepted_riders:
+                cols = st.columns([4, 1])
+                cols[0].write(f"**{name}** — {km:.2f} km")
+                if cols[1].button("Accept", key=f"accept_{name}"):
+                    st.session_state.accepted_riders.setdefault(driver, []).append(name)
+                    st.session_state.active_drivers.setdefault(driver, []).append(name)
+                    st.success(f"Accepted {name}")
+            else:
+                st.info(f"✅ Already accepted: {name}")
 
         # Show shortest-path subgraph for this driver
         if driver in st.session_state.accepted_riders:
             riders = st.session_state.accepted_riders[driver]
             st.subheader("📈 Shortest-Path Graph for Your Route")
             G_route = nx.Graph()
-            # Add driver and riders to subgraph
             G_route.add_node(driver)
             for r in riders:
                 G_route.add_node(r)
                 G_route.add_edge(driver, r, weight=dist_df.at[driver, r])
 
-            fig_route, ax_route = plt.subplots(figsize=(5, 5))
+            fig_route, ax_route = plt.subplots(figsize=(6, 6))
             pos_route = nx.spring_layout(G_route, seed=24)
-            nx.draw(G_route, pos_route, node_size=200,
-                    node_color=['green'] + ['orange'] * len(riders),
-                    with_labels=True, font_weight='bold', ax=ax_route)
+            node_colors = ['green'] + ['orange'] * len(riders)
+            nx.draw(G_route, pos_route, node_size=400, node_color=node_colors,
+                    with_labels=True, font_weight='bold', font_size=8, ax=ax_route)
             edge_labels = {(driver, r): f"{dist_df.at[driver, r]:.2f} km" for r in riders}
             nx.draw_networkx_edge_labels(G_route, pos_route, edge_labels=edge_labels, font_size=8, ax=ax_route)
             ax_route.set_axis_off()
