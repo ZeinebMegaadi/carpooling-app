@@ -83,35 +83,39 @@ if role == "Driver":
         nearest = dists.nsmallest(3)
 
         st.subheader("Suggested Riders (Closest First)")
-        accepted_riders = st.session_state.accepted_riders.get(driver, [])
+        accepted_riders = st.session_state.accepted_riders.setdefault(driver, [])
 
         for name, km in nearest.items():
+            cols = st.columns([3, 1, 1])
+            cols[0].write(f"**{name}** — {km:.2f} km")
+
             if name not in accepted_riders:
-                cols = st.columns([4, 1])
-                cols[0].write(f"**{name}** — {km:.2f} km")
                 if cols[1].button("Accept", key=f"accept_{name}"):
-                    st.session_state.accepted_riders.setdefault(driver, []).append(name)
+                    accepted_riders.append(name)
                     st.session_state.active_drivers.setdefault(driver, []).append(name)
                     st.success(f"Accepted {name}")
             else:
-                st.info(f"✅ Already accepted: {name}")
+                if cols[2].button("Decline", key=f"decline_{name}"):
+                    accepted_riders.remove(name)
+                    if name in st.session_state.active_drivers.get(driver, []):
+                        st.session_state.active_drivers[driver].remove(name)
+                    st.warning(f"Declined {name}")
 
         # Show shortest-path subgraph for this driver
-        if driver in st.session_state.accepted_riders:
-            riders = st.session_state.accepted_riders[driver]
+        if accepted_riders:
             st.subheader("📈 Shortest-Path Graph for Your Route")
             G_route = nx.Graph()
             G_route.add_node(driver)
-            for r in riders:
+            for r in accepted_riders:
                 G_route.add_node(r)
                 G_route.add_edge(driver, r, weight=dist_df.at[driver, r])
 
             fig_route, ax_route = plt.subplots(figsize=(6, 6))
             pos_route = nx.spring_layout(G_route, seed=24)
-            node_colors = ['green'] + ['orange'] * len(riders)
+            node_colors = ['green'] + ['orange'] * len(accepted_riders)
             nx.draw(G_route, pos_route, node_size=400, node_color=node_colors,
                     with_labels=True, font_weight='bold', font_size=8, ax=ax_route)
-            edge_labels = {(driver, r): f"{dist_df.at[driver, r]:.2f} km" for r in riders}
+            edge_labels = {(driver, r): f"{dist_df.at[driver, r]:.2f} km" for r in accepted_riders}
             nx.draw_networkx_edge_labels(G_route, pos_route, edge_labels=edge_labels, font_size=8, ax=ax_route)
             ax_route.set_axis_off()
             st.pyplot(fig_route)
