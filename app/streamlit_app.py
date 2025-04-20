@@ -47,6 +47,29 @@ with st.expander("🔍 Full Student Graph"):
     ax_full.set_axis_off()
     st.pyplot(fig_full)
 
+# --- Display Shortest Path Tree Graph ---
+with st.expander("🧭 Shortest Path Tree Graph"):
+    st.subheader("Shortest Path Tree from a Starting Student")
+    selected = st.selectbox("Select a student to build shortest path tree from:", students, key="spt_selector")
+    if selected:
+        G_spt = nx.Graph()
+        for target in students:
+            if selected != target:
+                try:
+                    path = nx.shortest_path(G_full, source=selected, target=target, weight='weight')
+                    for u, v in zip(path[:-1], path[1:]):
+                        G_spt.add_edge(u, v, weight=dist_df.at[u, v])
+                except nx.NetworkXNoPath:
+                    pass
+
+        fig_spt, ax_spt = plt.subplots(figsize=(8, 8))
+        pos_spt = nx.spring_layout(G_spt, seed=42)
+        nx.draw(G_spt, pos_spt, node_size=300, node_color='lightgreen', with_labels=True, font_size=8, ax=ax_spt)
+        edge_labels = nx.get_edge_attributes(G_spt, 'weight')
+        nx.draw_networkx_edge_labels(G_spt, pos_spt, edge_labels={k: f"{v:.2f}" for k, v in edge_labels.items()}, font_size=6, ax=ax_spt)
+        ax_spt.set_axis_off()
+        st.pyplot(fig_spt)
+
 # --- Role Selection ---
 role = st.radio("I am a:", ["Driver", "Passenger"])
 
