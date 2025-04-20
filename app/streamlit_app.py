@@ -1,71 +1,56 @@
-# streamlit_app.py
+# app/streamlit_app.py
 
 import streamlit as st
 import pandas as pd
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
 
-def add_university_node(G, university_coords, student_coords_df):
-    G.add_node("University")
-    for _, row in student_coords_df.iterrows():
-        student = row['Name']
-        lat, lon = row['Latitude'], row['Longitude']
-        dist = np.sqrt((lat - university_coords[0])**2 + (lon - university_coords[1])**2)
-        G.add_edge(student, "University", weight=dist)
-    return G
+# --- Load the single CSV (distance matrix) ---
+@st.cache_data
+def load_data():
+    df = pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+    return df
 
-def find_shortest_path(driver, passengers, G):
-    paths = {
-        p: {
-            "path": nx.shortest_path(G, driver, p, weight="weight"),
-            "distance": nx.shortest_path_length(G, driver, p, weight="weight")
-        } for p in passengers
-    }
-    uni_path = nx.shortest_path(G, driver, "University", weight="weight")
-    uni_dist = nx.shortest_path_length(G, driver, "University", weight="weight")
-    return paths, uni_path, uni_dist
+# Load distances and student list
+dist_df = load_data()
+students = dist_df.index.tolist()
 
-# App
-st.title("🚗 Carpool Route Optimizer")
+# Initialize session state for active drivers
+if "active_drivers" not in st.session_state:
+    st.session_state.active_drivers = {}  # { driver_name: [passenger1, passenger2, ...] }
 
-uploaded_coords = st.file_uploader("Upload student coordinates CSV", type="csv")
-uploaded_matrix = st.file_uploader("Upload distance matrix CSV", type="csv")
+# --- App UI ---
+st.title("🚗 Uni Carpooling App")
 
-if uploaded_coords and uploaded_matrix:
-    coords_df = pd.read_csv(uploaded_coords)
-    dist_df = pd.read_csv(uploaded_matrix, index_col=0)
+role = st.radio("I am a:", ["Driver", "Passenger"])
 
-    # Build Graph
-    G = nx.Graph()
-    for node in dist_df.columns:
-        G.add_node(node)
-    for i in dist_df.columns:
-        for j in dist_df.columns:
-            if i != j and pd.notna(dist_df.loc[i, j]):
-                G.add_edge(i, j, weight=dist_df.loc[i, j])
+if role == "Driver":
+    driver = st.selectbox("Select your name:", students)
+    if driver:
+        # Compute three nearest other students
+        dists = dist_df.loc[driver].drop(driver)
+        nearest = dists.nsmallest(3)
+        
+        st.subheader("Suggested riders:")
+        for name, km in nearest.items():
+            st.write(f"- {name}  ({km:.2f} km)")
 
-    # Add university as a node
-    university_coords = (36.8650, 10.3220)
-    G = add_university_node(G, university_coords, coords_df)
+        # Accept button
+        if st.button("✅ Accept these riders"):
+            st.session_state.active_drivers[driver] = list(nearest.index)
+            st.success(f"You’ll drive: {', '.join(nearest.index)}")
 
-    st.subheader("Graph Preview")
-    pos = nx.spring_layout(G, seed=42)
-    fig, ax = plt.subplots()
-    nx.draw(G, pos, with_labels=True, node_size=500, node_color="skyblue", ax=ax)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=6)
-    st.pyplot(fig)
+elif role == "Passenger":
+    passenger = st.selectbox("Select your name:", students)
+    if passenger:
+        active = st.session_state.active_drivers
+        if not active:
+            st.info("No drivers have signed up yet. Please check back later.")
+        else:
+            # Compute each active driver's distance to this passenger
+            options = [(drv, dist_df.at[drv, passenger]) for drv in active]
+            options.sort(key=lambda x: x[1])
 
-    driver = st.selectbox("Select Driver", dist_df.columns)
-    passengers = st.multiselect("Select up to 3 Passengers", [p for p in dist_df.columns if p != driver])
-
-    if len(passengers) > 3:
-        st.warning("Please select no more than 3 passengers.")
-    elif driver and passengers:
-        st.subheader("🚦 Route Summary")
-        shortest_paths, uni_path, uni_dist = find_shortest_path(driver, passengers, G)
-
-        for p, result in shortest_paths.items():
-            st.write(f"🧍 {p}: Path - {result['path']} | Distance: {result['distance']:.2f} km")
-
-        st.write(f"🏫 University Path: {uni_path} | Distance: {uni_dist:.2f} km")
+            st.subheader("Available drivers:")
+            for drv, km in options:
+                st.write(f"- {drv}  ({km:.2f} km away)")
+                if st.button(f"Request ride from {drv}", key=f"request_{drv}"):
+                    st.success(f"Ride requested from **{drv}**! 🚀")
