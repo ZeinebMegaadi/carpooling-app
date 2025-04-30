@@ -14,12 +14,13 @@ st.set_page_config(page_title="Uni Carpooling", layout="wide")
 st.markdown("""
     <style>
 
+
     body {
-        background-color: #A9A9A9;
+        background-color: #f7f9fc;
         color: #111111;
     }
     .stApp {
-        background-color: #A9A9A9;
+        background-color: #f7f9fc;
         color: #111111;
     }
     .stRadio > div {
@@ -36,7 +37,7 @@ st.markdown("""
         color: #111111;
     }
     .section {
-        background-color: #A9A9A9;
+        background-color: #ffffff;
         padding: 1.5rem;
         margin-bottom: 2rem;
         border-radius: 10px;
@@ -55,6 +56,22 @@ button div {
 .css-16idsys span,
 .stRadio label {
     color: #111111 !important;
+}
+
+/* Force black text on radio buttons */
+.stRadio label div[data-testid="stMarkdownContainer"] > p {
+    color: #111111 !important;
+    font-weight: 500;
+}
+
+/* Fix message colors */
+.css-1cpxqw2 {  /* st.success */
+    background-color: #d1e7dd !important;
+    color: #0f5132 !important;
+}
+.css-1wivap2 {  /* st.warning */
+    background-color: #fff3cd !important;
+    color: #664d03 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -152,13 +169,13 @@ if role == "Driver":
             cols = st.columns([3, 1, 1])
             cols[0].write(f"**{name}** — {km:.2f} km")
             if name in accepted_riders:
-                if cols[2].button("Decline", key=f"decline_{name}"):
+                elif cols[2].button("Decline", key=f"decline_{name}"):
                     accepted_riders.remove(name)
                     if name in st.session_state.active_drivers.get(driver, []):
                         st.session_state.active_drivers[driver].remove(name)
                     st.warning(f"Declined {name}")
             else:
-                if cols[1].button("Accept", key=f"accept_{name}"):
+                elif cols[1].button("Accept", key=f"accept_{name}"):
                     accepted_riders.append(name)
                     st.session_state.active_drivers.setdefault(driver, []).append(name)
                     st.success(f"Accepted {name}")
