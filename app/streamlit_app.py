@@ -266,6 +266,16 @@ random.seed(42)
 drivers = random.sample([s for s in students if s != current_user and s not in ['Arij Aouina', 'Rania Ben Moussa', 'Ahmed Said Mohamed', 'Abidi Fares']], min(7, len(students)-1))
 
 # --------- GRAPH 1: everyone, 3 closest edges each ---------
+
+# --------- IMMEDIATE DRIVER ACTION AREA ---------
+if st.session_state.role == "Driver":
+  st.markdown("### 🎯 Select Passengers to Pick Up (Random Suggestions)")
+  potential_passengers = random.sample([s for s in students if s != current_user and s not in drivers], min(3, len(students)-len(drivers)-1))
+  for p in potential_passengers:
+    if st.button(f"🚗 Accept {p} as passenger", key=f"instant_accept_{p}"):
+      st.session_state.accepted.setdefault(current_user, []).append(p)
+      st.success(f"{p} added to your route!")
+
 st.markdown("### 🌐 All Students: Each Connected to 3 Nearest Neighbors")
 fig1, ax1 = plt.subplots(figsize=(10, 8))
 nx.draw(G, pos, with_labels=True, node_size=500, font_size=8, ax=ax1)
