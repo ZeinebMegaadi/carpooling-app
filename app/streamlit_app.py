@@ -1,93 +1,88 @@
-# app/streamlit_app.py
-
 import streamlit as st
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import numpy as np
+import random
 
-# --- Custom Styling ---
-st.markdown("""
-<style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
-    .stRadio > div {
-        flex-direction: row;
-        justify-content: center;
-    }
-    h1, h2, h3, h4 {
-        color: #00416d;
-    }
-    .css-1d391kg, .css-1q8dd3e {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
-        padding: 1rem;
-    }
-</style>
-""", unsafe_allow_html=True)
+# Load distance matrix
+df = pd.read_csv("distance_matrix_km.csv", index_col=0)
+students = list(df.index)
 
-# --- Page Config ---
-st.set_page_config(page_title="Uni Carpooling", layout="wide")
-st.title("🚗 Uni Carpooling App")
-st.markdown("""
-### Welcome to the SMU Carpooling Assistant
-Plan efficient routes to university with smart suggestions based on real distances. Visualize graph-based connections between students.
-""")
+# Create Graph
+def create_graph(df):
+    G = nx.Graph()
+    for i in df.index:
+        for j in df.columns:
+            if i != j:
+                G.add_edge(i, j, weight=df.loc[i, j])
+    return G
 
-# --- Load Distance Matrix ---
-@st.cache_data
-def load_data():
-    df = pd.read_csv("data/distance_matrix_km.csv", index_col=0)
-    df.index = df.index.str.strip()
-    df.columns = df.columns.str.strip()
-    return df
+G = create_graph(df)
 
-dist_df = load_data()
-students = dist_df.index.tolist()
+# Session state for role and requests
+if 'role' not in st.session_state:
+    st.session_state.role = None
+if 'requests' not in st.session_state:
+    st.session_state.requests = {}
+if 'accepted' not in st.session_state:
+    st.session_state.accepted = {}
 
-# --- Session State for Active Drivers and Accepted Riders ---
-if "active_drivers" not in st.session_state:
-    st.session_state.active_drivers = {}
-if "accepted_riders" not in st.session_state:
-    st.session_state.accepted_riders = {}
+st.title("🚗 SMU Carpooling Network App")
 
-# --- Constants for Distance Filtering ---
-MIN_DIST = 0.01
-MAX_DIST = 7.0
+# Select user
+current_user = st.selectbox("Select your name:", students)
 
-# --- Build Graph with Only Nearest Edges ---
-G_full = nx.DiGraph()
-for student in students:
-    dists = dist_df.loc[student].drop(labels=[student], errors='ignore').apply(lambda x: max(x, MIN_DIST))
-    nearest = dists.nsmallest(3)
-    for neighbor, weight in nearest.items():
-        G_full.add_edge(student, neighbor, weight=weight)
+# Select role
+if st.session_state.role is None:
+    st.session_state.role = st.radio("Are you a driver or a passenger?", ["Driver", "Passenger"])
 
-# --- Display Directional Graph of Closest Connections ---
-with st.expander("🔍 Full Student Graph (Closest Edges Only)"):
-    st.subheader("Graph of Students with Arrows to 3 Nearest Neighbors")
-    fig_full, ax_full = plt.subplots(figsize=(9, 9))
-    pos_full = nx.spring_layout(G_full, seed=42)
-    weights = np.array([G_full[u][v]['weight'] for u, v in G_full.edges()])
-    norm = plt.Normalize(weights.min(), weights.max())
-    colors = cm.viridis(norm(weights))
-    nx.draw_networkx_nodes(G_full, pos_full, node_size=350, node_color='lightblue', ax=ax_full)
-    nx.draw_networkx_labels(G_full, pos_full, font_size=8, ax=ax_full)
-    nx.draw_networkx_edges(G_full, pos_full, edge_color=colors, edge_cmap=cm.viridis, arrows=True, width=2, ax=ax_full)
-    edge_labels = {(u, v): f"{G_full[u][v]['weight']:.2f}" for u, v in G_full.edges()}
-    nx.draw_networkx_edge_labels(G_full, pos_full, edge_labels=edge_labels, font_size=6, ax=ax_full)
-    ax_full.set_axis_off()
-    st.pyplot(fig_full)
+# Randomly select 3 drivers
+random.seed(42)
+drivers = random.sample(students, 7)
+drivers_set = set(drivers)
 
-# --- Role Selection ---
-role = st.radio("I am a:", ["Driver", "Passenger"])
+st.markdown("### 👥 Carpool Network Graph (All Students)")
+fig1, ax1 = plt.subplots(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42)
+nx.draw(G, pos, with_labels=True, node_size=500, font_size=8, ax=ax1)
+st.pyplot(fig1)
 
-# Continue your logic...
+# Passenger functionality
+if st.session_state.role == "Passenger":
+    available_drivers = [d for d in drivers if d != current_user]
+    selected_driver = st.selectbox("Select a driver to request carpool with:", available_drivers)
+    if st.button("Send Request"):
+        st.session_state.requests.setdefault(selected_driver, []).append(current_user)
+        st.success(f"Request sent to {selected_driver}")
+
+# Driver functionality
+if st.session_state.role == "Driver":
+    st.markdown(f"### 🚘 Welcome Driver: **{current_user}**")
+    requests = st.session_state.requests.get(current_user, [])
+    if requests:
+        for passenger in requests:
+            col1, col2 = st.columns([2,1])
+            with col1:
+                st.write(f"Passenger request from: {passenger}")
+            with col2:
+                if st.button(f"Accept {passenger}"):
+                    st.session_state.accepted.setdefault(current_user, []).append(passenger)
+                    st.success(f"Accepted {passenger}")
+    else:
+        st.info("No requests yet.")
+
+# Display shortest path graph (Driver + Accepted Passengers)
+if st.session_state.role == "Driver" and current_user in st.session_state.accepted:
+    passengers = st.session_state.accepted[current_user]
+    st.markdown("### 🗺️ Shortest Path Graph to Passengers")
+    fig2, ax2 = plt.subplots(figsize=(10, 8))
+    shortest_path_graph = nx.Graph()
+    for p in passengers:
+        path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
+        nx.add_path(shortest_path_graph, path)
+    nx.draw(shortest_path_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax2, edge_color='green')
+    st.pyplot(fig2)
+
+# Footer
+st.markdown("---")
+st.caption("SMU Carpooling App using Graph Theory | Developed with Streamlit")
