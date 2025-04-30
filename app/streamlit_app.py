@@ -58,7 +58,8 @@ with st.expander("🧭 Shortest Path Tree Graph"):
                 try:
                     path = nx.shortest_path(G_full, source=selected, target=target, weight='weight')
                     for u, v in zip(path[:-1], path[1:]):
-                        G_spt.add_edge(u, v, weight=dist_df.at[u, v])
+                        weight = max(dist_df.at[u, v], MIN_DIST)
+                        G_spt.add_edge(u, v, weight=weight)
                 except nx.NetworkXNoPath:
                     pass
 
@@ -77,7 +78,6 @@ role = st.radio("I am a:", ["Driver", "Passenger"])
 if role == "Driver":
     driver = st.selectbox("Select your name:", students)
     if driver:
-        # Compute nearest riders within MAX_DIST
         dists = dist_df.loc[driver].drop(driver).apply(lambda x: max(x, MIN_DIST))
         dists = dists[dists <= MAX_DIST]
         nearest = dists.nsmallest(3)
@@ -89,19 +89,18 @@ if role == "Driver":
             cols = st.columns([3, 1, 1])
             cols[0].write(f"**{name}** — {km:.2f} km")
 
-            if name not in accepted_riders:
-                if cols[1].button("Accept", key=f"accept_{name}"):
-                    accepted_riders.append(name)
-                    st.session_state.active_drivers.setdefault(driver, []).append(name)
-                    st.success(f"Accepted {name}")
-            else:
+            if name in accepted_riders:
                 if cols[2].button("Decline", key=f"decline_{name}"):
                     accepted_riders.remove(name)
                     if name in st.session_state.active_drivers.get(driver, []):
                         st.session_state.active_drivers[driver].remove(name)
                     st.warning(f"Declined {name}")
+            else:
+                if cols[1].button("Accept", key=f"accept_{name}"):
+                    accepted_riders.append(name)
+                    st.session_state.active_drivers.setdefault(driver, []).append(name)
+                    st.success(f"Accepted {name}")
 
-        # Show shortest-path subgraph for this driver
         if accepted_riders:
             st.subheader("📈 Shortest-Path Graph for Your Route")
             G_route = nx.Graph()
@@ -129,7 +128,6 @@ elif role == "Passenger":
             st.info("No drivers available at the moment. Please check back soon.")
         else:
             st.subheader("Available Drivers Near You")
-            # Compute and filter distances
             options = [(drv, max(dist_df.at[drv, passenger], MIN_DIST)) for drv in active]
             options = [opt for opt in options if opt[1] <= MAX_DIST]
             options.sort(key=lambda x: x[1])
