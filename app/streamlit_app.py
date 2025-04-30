@@ -326,8 +326,6 @@ elif st.session_state.role == "Driver":
                 if st.button(f"❌ Decline {passenger}", key=f"dec_{passenger}"):
                     st.session_state.declined.setdefault(current_user, []).append(passenger)
                     st.warning(f"Declined {passenger}")
-    else:
-        st.info("No requests yet.")
 
     # --------- GRAPH 3: accepted passengers only ---------
     if current_user in st.session_state.accepted and st.session_state.accepted[current_user]:
