@@ -332,15 +332,34 @@ elif st.session_state.role == "Driver":
         st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
+    # Remove passenger button logic
+    for passenger in st.session_state.accepted[current_user]:
+        if st.button(f"❌ Remove {passenger}", key=f"remove_{passenger}"):
+            st.session_state.accepted[current_user].remove(passenger)
+            st.success(f"{passenger} has been removed from your ride.")
+
+    # Build final graph for only accepted passengers
+    if st.session_state.accepted[current_user]:
+        st.markdown("### 🗺️ Confirmed Carpool Group")
+        fig3, ax3 = plt.subplots(figsize=(10, 8))
+        final_graph = nx.Graph()
         for p in st.session_state.accepted[current_user]:
             try:
                 path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
                 for i in range(len(path) - 1):
                     u, v = path[i], path[i + 1]
-                    if G.has_edge(u, v):
+                    if (u == current_user or v == current_user):  # Only include edges directly connected to driver
                         final_graph.add_edge(u, v, weight=G[u][v]['weight'])
+                        final_graph.add_node(u)
+                        final_graph.add_node(v)
             except nx.NetworkXNoPath:
                 st.warning(f"No path to {p}")
+        color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
+        nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
+        edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
+        nx.draw_networkx_edge_labels(final_graph, pos, edge_labels=edge_labels3, ax=ax3, font_size=7)
+        ax3.set_title("Red = Driver | Green = Accepted Passengers")
+        st.pyplot(fig3)
         color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
         nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
         edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
