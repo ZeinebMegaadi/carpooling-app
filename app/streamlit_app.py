@@ -7,11 +7,40 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 
+# --- Custom Styling ---
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    .stRadio > div {
+        flex-direction: row;
+        justify-content: center;
+    }
+    h1, h2, h3, h4 {
+        color: #00416d;
+    }
+    .css-1d391kg, .css-1q8dd3e {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+        padding: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # --- Page Config ---
 st.set_page_config(page_title="Uni Carpooling", layout="wide")
 st.title("🚗 Uni Carpooling App")
-st.markdown("**Leveraging Graph Theory for Smart Carpool Matching**")
-
+st.markdown("""
+### Welcome to the SMU Carpooling Assistant
+Plan efficient routes to university with smart suggestions based on real distances. Visualize graph-based connections between students.
+""")
 # --- Load Distance Matrix ---
 @st.cache_data
 def load_data():
