@@ -7,192 +7,226 @@ import random
 # Trimmed distance matrix (3 nearest neighbors)
 distance_dict = {
   "Seif Eddine Mezned": {
-    "Mohamed Amin Boukettaya": 0.0,
+    "Mohamed Amin Boukettaya": 0.02,
     "Elyes Cyril Boughedir": 0.08,
     "Emna Barbouch": 0.19,
-    "Yasmine Jedidi": 0.03
+    "Arij Aouina": 2.39,
+    "Yasmine Jedidi": 0.03,
+    "Youssef Mohamed Bechir": 1.48
   },
   "Mohamed Amin Boukettaya": {
-    "Seif Eddine Mezned": 0.0,
+    "Seif Eddine Mezned": 0.02,
     "Ahmed Said Mohamed": 2.39,
-    "Elyes Cyril Boughedir": 0.0,
-    "Yasmine Jedidi": 0.0,
-    "Mahdi Soudani": 0.19
+    "Mohamed Yamoun Hamdi": 0.19,
+    "Emna Barbouch": 0.19,
+    "Mahdi Soudani": 0.19,
+    "Abdelkarim Elhamdi": 0.19
   },
   "Elyes Cyril Boughedir": {
     "Seif Eddine Mezned": 0.08,
-    "Mohamed Amin Boukettaya": 0.0,
-    "Yasmine Jedidi": 0.0,
-    "Mohamed Aymen Hassini": 0.19
+    "Mahdi Soudani": 0.19,
+    "Mohamed Yamoun Hamdi": 0.19,
+    "Abdelkarim Elhamdi": 0.19,
+    "Mohamed Aymen Hassini": 0.19,
+    "Emna Barbouch": 0.19,
+    "Nabila Ben Zineb": 1.66
   },
   "Emna Barbouch": {
     "Seif Eddine Mezned": 0.19,
-    "Mohamed Aymen Hassini": 0.0,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0
+    "Mohamed Amin Boukettaya": 0.19,
+    "Elyes Cyril Boughedir": 0.19,
+    "Yasmine Ben Ismail": 0.3,
+    "Yasmine Jedidi": 0.19,
+    "Mahdi Soudani": 0.2,
+    "Mohamed Bettaieb Marouen": 1.33
   },
   "Mahdi Soudani": {
     "Mohamed Amin Boukettaya": 0.19,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Aymen Hassini": 0.0,
-    "Yasmine Jedidi": 0.19,
-    "Nabila Ben Zineb": 0.88
-  },
-  "Mohamed Yamoun Hamdi": {
-    "Emna Barbouch": 0.0,
-    "Mahdi Soudani": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Aymen Hassini": 0.0
-  },
-  "Abdelkarim Elhamdi": {
-    "Emna Barbouch": 0.0,
-    "Mahdi Soudani": 0.0,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Mohamed Aymen Hassini": 0.0,
-    "Mohamed Amine Neffati": 1.33,
-    "Mohamed Bettaieb Marouen": 1.33
-  },
-  "Mohamed Aymen Hassini": {
     "Elyes Cyril Boughedir": 0.19,
-    "Emna Barbouch": 0.0,
-    "Mahdi Soudani": 0.0,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0
+    "Emna Barbouch": 0.2,
+    "Yasmine Jedidi": 0.19,
+    "Nabila Ben Zineb": 0.88,
+    "Mohamed Aymen Hassini": 0.02
+  },
+  "Yasmine Jedidi": {
+    "Seif Eddine Mezned": 0.03,
+    "Emna Barbouch": 0.19,
+    "Mahdi Soudani": 0.19,
+    "Mohamed Yamoun Hamdi": 0.19,
+    "Abidi Fares": 2.15,
+    "Mohamed Aymen Hassini": 0.19,
+    "Nour Chouchane": 2.15
+  },
+  "Nabila Ben Zineb": {
+    "Elyes Cyril Boughedir": 1.66,
+    "Mahdi Soudani": 0.88,
+    "Ahmed Said Mohamed": 1.37,
+    "Aymen El Hadhri": 0.35,
+    "Abdelkarim Elhamdi": 2.17,
+    "Mohamed Amine Zekri": 1.37,
+    "Arij Aouina": 1.37,
+    "Khammassi Nour": 0.35,
+    "Youssef Mohamed Bechir": 0.07,
+    "Mimouna Baya Chaaben": 0.88
   },
   "Mimouna Baya Chaaben": {
-    "Yasmine Ben Ismail": 0.0,
+    "Nabila Ben Zineb": 0.88,
     "Ahmed Said Mohamed": 0.24,
     "Arij Aouina": 0.24,
+    "Mohamed Aziz Souissi": 1.22,
+    "Mohamed Amine Zekri": 0.93,
     "Youssef Mohamed Bechir": 1.34,
     "Yassine Ben Knani": 1.34,
-    "Mourad Kochkar": 0.88
-  },
-  "Yasmine Ben Ismail": {
-    "Mimouna Baya Chaaben": 0.0,
-    "Ahmed Said Mohamed": 0.24,
-    "Arij Aouina": 0.24,
-    "Mourad Kochkar": 0.88
+    "Mourad Kochkar": 0.88,
+    "Rania Ben Moussa": 1.34
   },
   "Ahmed Said Mohamed": {
     "Mohamed Amin Boukettaya": 2.39,
+    "Nabila Ben Zineb": 1.37,
     "Mimouna Baya Chaaben": 0.24,
+    "Mohamed Yamoun Hamdi": 2.86,
     "Yasmine Ben Ismail": 0.24,
-    "Arij Aouina": 0.0,
-    "Nabila Ben Zineb": 1.37
+    "Mohamed Bettaieb Marouen": 3.26
   },
   "Arij Aouina": {
-    "Mimouna Baya Chaaben": 0.24,
-    "Yasmine Ben Ismail": 0.24,
-    "Ahmed Said Mohamed": 0.0,
-    "Aya Hachana": 3.26,
+    "Seif Eddine Mezned": 2.39,
     "Nabila Ben Zineb": 1.37,
-    "Mourad Kochkar": 1.37
+    "Mimouna Baya Chaaben": 0.24,
+    "Aya Hachana": 3.26,
+    "Mourad Kochkar": 1.37,
+    "Yasmine Ben Ismail": 0.24,
+    "Ben Abda Iskander": 2.77
   },
   "Mohamed Aziz Souissi": {
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Abidi Fares": 0.0,
-    "Ben Abda Iskander": 0.0,
-    "Nour Chouchane": 0.0
+    "Mimouna Baya Chaaben": 1.22,
+    "Nour Chouchane": 0.2,
+    "Youssef Mohamed Bechir": 2.81,
+    "Yassine Ben Knani": 2.81,
+    "Aya Hachana": 5.29
   },
-  "Mohamed Amine Zekri": {
-    "Mohamed Aziz Souissi": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Abidi Fares": 0.0,
-    "Ben Abda Iskander": 0.0,
-    "Nour Chouchane": 0.0
+  "Nour Chouchane": {
+    "Yasmine Jedidi": 2.15,
+    "Mohamed Aziz Souissi": 0.2,
+    "Mohamed Amine Zekri": 0.67,
+    "El Fedi Zairi": 0.3,
+    "Abidi Fares": 0.2,
+    "Ben Abda Iskander": 0.2,
+    "Khammassi Nour": 0.56,
+    "Youssef Mohamed Bechir": 2.81
   },
-  "El Fedi Zairi": {
-    "Mohamed Aziz Souissi": 0.0,
-    "Mohamed Amine Zekri": 0.0,
-    "Abidi Fares": 0.0,
-    "Ben Abda Iskander": 0.0,
-    "Nour Chouchane": 0.0
+  "Youssef Mohamed Bechir": {
+    "Seif Eddine Mezned": 1.48,
+    "Nabila Ben Zineb": 0.07,
+    "Mimouna Baya Chaaben": 1.34,
+    "Mohamed Aziz Souissi": 2.81,
+    "Nour Chouchane": 2.81,
+    "Aymen El Hadhri": 4.0,
+    "El Fedi Zairi": 2.81,
+    "Yasmine Ben Ismail": 1.34,
+    "Ben Abda Iskander": 2.81
   },
-  "Abidi Fares": {
-    "Mohamed Aziz Souissi": 0.0,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Ben Abda Iskander": 0.0,
-    "Nour Chouchane": 0.0
+  "Yassine Ben Knani": {
+    "Mimouna Baya Chaaben": 1.34,
+    "Mohamed Aziz Souissi": 2.81,
+    "Yasmine Ben Ismail": 1.34,
+    "Aymen El Hadhri": 3.56
   },
-  "Nabila Ben Zineb": {
-    "Mahdi Soudani": 0.88,
-    "Ahmed Said Mohamed": 1.37,
-    "Arij Aouina": 1.37,
-    "Aymen El Hadhri": 0.35,
-    "Khammassi Nour": 0.35,
-    "Mourad Kochkar": 0.0,
-    "Youssef Mohamed Bechir": 0.07
+  "Mohamed Yamoun Hamdi": {
+    "Mohamed Amin Boukettaya": 0.19,
+    "Elyes Cyril Boughedir": 0.19,
+    "Yasmine Jedidi": 0.19,
+    "Ahmed Said Mohamed": 2.86
   },
   "Aymen El Hadhri": {
     "Nabila Ben Zineb": 0.35,
-    "Khammassi Nour": 0.0,
-    "Mourad Kochkar": 0.35
-  },
-  "Khammassi Nour": {
-    "Nabila Ben Zineb": 0.35,
-    "Aymen El Hadhri": 0.0,
+    "Youssef Mohamed Bechir": 4.0,
+    "Yassine Ben Knani": 3.56,
     "Mourad Kochkar": 0.35
   },
   "Mourad Kochkar": {
     "Mimouna Baya Chaaben": 0.88,
-    "Yasmine Ben Ismail": 0.88,
     "Arij Aouina": 1.37,
-    "Nabila Ben Zineb": 0.0,
     "Aymen El Hadhri": 0.35,
     "Khammassi Nour": 0.35,
+    "Yasmine Ben Ismail": 0.88,
+    "El Fedi Zairi": 1.24,
     "Rania Ben Moussa": 0.15
+  },
+  "Abdelkarim Elhamdi": {
+    "Mohamed Amin Boukettaya": 0.19,
+    "Elyes Cyril Boughedir": 0.19,
+    "Nabila Ben Zineb": 2.17,
+    "Ben Abda Iskander": 0.12,
+    "Mohamed Amine Neffati": 1.33,
+    "Mohamed Bettaieb Marouen": 1.33
+  },
+  "Ben Abda Iskander": {
+    "Arij Aouina": 2.77,
+    "Nour Chouchane": 0.2,
+    "Youssef Mohamed Bechir": 2.81,
+    "Abdelkarim Elhamdi": 0.12
+  },
+  "Mohamed Amine Zekri": {
+    "Nabila Ben Zineb": 1.37,
+    "Mimouna Baya Chaaben": 0.93,
+    "Nour Chouchane": 0.67,
+    "Mohamed Amine Neffati": 2.29
+  },
+  "El Fedi Zairi": {
+    "Nour Chouchane": 0.3,
+    "Youssef Mohamed Bechir": 2.81,
+    "Mourad Kochkar": 1.24,
+    "Rania Ben Moussa": 0.81
+  },
+  "Rania Ben Moussa": {
+    "Mimouna Baya Chaaben": 1.34,
+    "Mourad Kochkar": 0.15,
+    "El Fedi Zairi": 0.81,
+    "Yasmine Ben Ismail": 1.34
   },
   "Aya Hachana": {
     "Arij Aouina": 3.26,
-    "Mohamed Bettaieb Marouen": 0.0,
-    "Mohamed Amine Neffati": 0.0
-  },
-  "Mohamed Bettaieb Marouen": {
-    "Abdelkarim Elhamdi": 1.33,
-    "Aya Hachana": 0.0,
-    "Mohamed Amine Neffati": 0.0
+    "Mohamed Aziz Souissi": 5.29,
+    "Mohamed Amine Neffati": 0.2,
+    "Khammassi Nour": 1.96
   },
   "Mohamed Amine Neffati": {
     "Abdelkarim Elhamdi": 1.33,
-    "Aya Hachana": 0.0,
-    "Mohamed Bettaieb Marouen": 0.0
+    "Mohamed Amine Zekri": 2.29,
+    "Aya Hachana": 0.2,
+    "Mohamed Bettaieb Marouen": 0.2
   },
-  "Yasmine Jedidi": {
-    "Seif Eddine Mezned": 0.03,
-    "Mohamed Amin Boukettaya": 0.0,
-    "Elyes Cyril Boughedir": 0.0,
-    "Mahdi Soudani": 0.19
+  "Abidi Fares": {
+    "Yasmine Jedidi": 2.15,
+    "Nour Chouchane": 0.2,
+    "Yasmine Ben Ismail": 1.93
   },
-  "Youssef Mohamed Bechir": {
-    "Mimouna Baya Chaaben": 1.34,
-    "Nabila Ben Zineb": 0.07,
-    "Yassine Ben Knani": 0.0,
-    "Rania Ben Moussa": 0.0
+  "Yasmine Ben Ismail": {
+    "Emna Barbouch": 0.3,
+    "Ahmed Said Mohamed": 0.24,
+    "Arij Aouina": 0.24,
+    "Youssef Mohamed Bechir": 1.34,
+    "Yassine Ben Knani": 1.34,
+    "Mourad Kochkar": 0.88,
+    "Rania Ben Moussa": 1.34,
+    "Abidi Fares": 1.93
   },
-  "Yassine Ben Knani": {
-    "Mimouna Baya Chaaben": 1.34,
-    "Youssef Mohamed Bechir": 0.0,
-    "Rania Ben Moussa": 0.0
+  "Mohamed Aymen Hassini": {
+    "Elyes Cyril Boughedir": 0.19,
+    "Mahdi Soudani": 0.02,
+    "Yasmine Jedidi": 0.19
   },
-  "Rania Ben Moussa": {
-    "Mourad Kochkar": 0.15,
-    "Youssef Mohamed Bechir": 0.0,
-    "Yassine Ben Knani": 0.0
+  "Khammassi Nour": {
+    "Nabila Ben Zineb": 0.35,
+    "Nour Chouchane": 0.56,
+    "Mourad Kochkar": 0.35,
+    "Aya Hachana": 1.96
   },
-  "Ben Abda Iskander": {
-    "Mohamed Aziz Souissi": 0.0,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Abidi Fares": 0.0
-  },
-  "Nour Chouchane": {
-    "Mohamed Aziz Souissi": 0.0,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Abidi Fares": 0.0
+  "Mohamed Bettaieb Marouen": {
+    "Emna Barbouch": 1.33,
+    "Ahmed Said Mohamed": 3.26,
+    "Abdelkarim Elhamdi": 1.33,
+    "Mohamed Amine Neffati": 0.2
   }
 }
 
