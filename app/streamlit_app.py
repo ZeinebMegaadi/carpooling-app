@@ -169,13 +169,13 @@ if role == "Driver":
             cols = st.columns([3, 1, 1])
             cols[0].write(f"**{name}** — {km:.2f} km")
             if name in accepted_riders:
-    if cols[2].button("Decline", key=f"decline_{name}"):
+            if cols[2].button("Decline", key=f"decline_{name}"):
                     accepted_riders.remove(name)
                     if name in st.session_state.active_drivers.get(driver, []):
                         st.session_state.active_drivers[driver].remove(name)
                     st.warning(f"Declined {name}")
             else:
-    if cols[1].button("Accept", key=f"accept_{name}"):
+            if cols[1].button("Accept", key=f"accept_{name}"):
                     accepted_riders.append(name)
                     st.session_state.active_drivers.setdefault(driver, []).append(name)
                     st.success(f"Accepted {name}")
@@ -218,11 +218,6 @@ elif role == "Passenger":
 with st.sidebar:
     st.header("⚙️ Controls")
     if st.button("Reset App State"):
-        for key in ["active_drivers", "accepted_riders"]:
-            if key in st.session_state:
-                del st.session_state[key]
-        st.experimental_rerun()
-
         for key in ["active_drivers", "accepted_riders"]:
             if key in st.session_state:
                 del st.session_state[key]
