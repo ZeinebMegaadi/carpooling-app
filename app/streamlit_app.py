@@ -4,906 +4,195 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-# Full cleaned distance matrix
+# Trimmed distance matrix (3 nearest neighbors)
 distance_dict = {
   "Seif Eddine Mezned": {
-    "Seif Eddine Mezned": 0.0,
-    "Mahdi Soudani": 7.19,
-    "Mimouna Baya Chaaben": 2.82,
-    "Mohamed Aziz Souissi": 28.18,
-    "Ahmed Said Mohamed": 2.12,
-    "Aymen El Hadhri": 20.17,
-    "Mohamed Yamoun Hamdi": 7.19,
-    "Abdelkarim Elhamdi": 7.19,
-    "Mohamed Amine Zekri": 26.18,
-    "El Fedi Zairi": 28.18,
-    "Aya Hachana": 6.49,
-    "Abidi Fares": 6.18,
-    "Mohamed Aymen Hassini": 7.19,
-    "Arij Aouina": 7.12,
-    "Yasmine Jedidi": 0.2,
-    "Yasmine Ben Ismail": 2.82,
-    "Emna Barbouch": 0.19,
-    "Khammassi Nour": 9.17,
-    "Youssef Mohamed Bechir": 19.93,
-    "Ben Abda Iskander": 8.18,
-    "Yassine Ben Knani": 19.93,
-    "Nabila Ben Zineb": 13.66,
-    "Mourad Kochkar": 2.66,
-    "Elyes Cyril Boughedir": 0.08,
-    "Rania Ben Moussa": 9.93,
-    "Mohamed Amine Neffati": 6.49,
-    "Mohamed Amin Boukettaya": 0.02,
-    "Mohamed Bettaieb Marouen": 6.49,
-    "Nour Chouchane": 28.18
-  },
-  "Mahdi Soudani": {
-    "Seif Eddine Mezned": 7.19,
-    "Mahdi Soudani": 0.0,
-    "Mimouna Baya Chaaben": 2.34,
-    "Mohamed Aziz Souissi": 7.69,
-    "Ahmed Said Mohamed": 3.23,
-    "Aymen El Hadhri": 8.68,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Amine Zekri": 7.69,
-    "El Fedi Zairi": 7.69,
-    "Aya Hachana": 6.01,
-    "Abidi Fares": 7.69,
-    "Mohamed Aymen Hassini": 0.0,
-    "Arij Aouina": 3.23,
-    "Yasmine Jedidi": 0.19,
-    "Yasmine Ben Ismail": 2.34,
-    "Emna Barbouch": 0.0,
-    "Khammassi Nour": 8.68,
-    "Youssef Mohamed Bechir": 9.45,
-    "Ben Abda Iskander": 7.69,
-    "Yassine Ben Knani": 9.45,
-    "Nabila Ben Zineb": 2.17,
-    "Mourad Kochkar": 2.17,
-    "Elyes Cyril Boughedir": 0.19,
-    "Rania Ben Moussa": 9.45,
-    "Mohamed Amine Neffati": 6.01,
-    "Mohamed Amin Boukettaya": 2.19,
-    "Mohamed Bettaieb Marouen": 16.01,
-    "Nour Chouchane": 7.69
-  },
-  "Mimouna Baya Chaaben": {
-    "Seif Eddine Mezned": 13.62,
-    "Mahdi Soudani": 3.3,
-    "Mimouna Baya Chaaben": 0.0,
-    "Mohamed Aziz Souissi": 1.22,
-    "Ahmed Said Mohamed": 0.24,
-    "Aymen El Hadhri": 2.57,
-    "Mohamed Yamoun Hamdi": 3.3,
-    "Abdelkarim Elhamdi": 3.3,
-    "Mohamed Amine Zekri": 1.52,
-    "El Fedi Zairi": 1.22,
-    "Aya Hachana": 1.23,
-    "Abidi Fares": 1.22,
-    "Mohamed Aymen Hassini": 3.3,
-    "Arij Aouina": 0.24,
-    "Yasmine Jedidi": 3.62,
-    "Yasmine Ben Ismail": 0.0,
-    "Emna Barbouch": 3.3,
-    "Khammassi Nour": 7.57,
-    "Youssef Mohamed Bechir": 2.77,
-    "Ben Abda Iskander": 1.22,
-    "Yassine Ben Knani": 2.77,
-    "Nabila Ben Zineb": 1.83,
-    "Mourad Kochkar": 1.83,
-    "Elyes Cyril Boughedir": 3.62,
-    "Rania Ben Moussa": 2.77,
-    "Mohamed Amine Neffati": 1.23,
-    "Mohamed Amin Boukettaya": 3.62,
-    "Mohamed Bettaieb Marouen": 1.23,
-    "Nour Chouchane": 11.22
-  },
-  "Mohamed Aziz Souissi": {
-    "Seif Eddine Mezned": 28.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 9.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 8.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
-    "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 4.77,
-    "Yasmine Jedidi": 8.15,
-    "Yasmine Ben Ismail": 9.93,
-    "Emna Barbouch": 7.84,
-    "Khammassi Nour": 8.56,
-    "Youssef Mohamed Bechir": 2.81,
-    "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 6.37,
-    "Mourad Kochkar": 6.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 2.81,
-    "Mohamed Amine Neffati": 25.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 5.77,
-    "Nour Chouchane": 0.2
-  },
-  "Ahmed Said Mohamed": {
-    "Seif Eddine Mezned": 27.39,
-    "Mahdi Soudani": 5.86,
-    "Mimouna Baya Chaaben": 9.53,
-    "Mohamed Aziz Souissi": 4.89,
-    "Ahmed Said Mohamed": 0.0,
-    "Aymen El Hadhri": 5.88,
-    "Mohamed Yamoun Hamdi": 2.86,
-    "Abdelkarim Elhamdi": 2.86,
-    "Mohamed Amine Zekri": 4.89,
-    "El Fedi Zairi": 4.89,
-    "Aya Hachana": 3.2,
-    "Abidi Fares": 4.89,
-    "Mohamed Aymen Hassini": 2.86,
-    "Arij Aouina": 0.0,
-    "Yasmine Jedidi": 7.39,
-    "Yasmine Ben Ismail": 9.53,
-    "Emna Barbouch": 2.86,
-    "Khammassi Nour": 5.88,
-    "Youssef Mohamed Bechir": 6.64,
-    "Ben Abda Iskander": 4.89,
-    "Yassine Ben Knani": 6.64,
-    "Nabila Ben Zineb": 1.37,
-    "Mourad Kochkar": 9.37,
-    "Elyes Cyril Boughedir": 7.39,
-    "Rania Ben Moussa": 6.64,
-    "Mohamed Amine Neffati": 3.2,
-    "Mohamed Amin Boukettaya": 2.39,
-    "Mohamed Bettaieb Marouen": 3.2,
-    "Nour Chouchane": 24.89
-  },
-  "Aymen El Hadhri": {
-    "Seif Eddine Mezned": 29.34,
-    "Mahdi Soudani": 9.03,
-    "Mimouna Baya Chaaben": 6.56,
-    "Mohamed Aziz Souissi": 8.61,
-    "Ahmed Said Mohamed": 5.96,
-    "Aymen El Hadhri": 0.0,
-    "Mohamed Yamoun Hamdi": 9.03,
-    "Abdelkarim Elhamdi": 9.03,
-    "Mohamed Amine Zekri": 8.61,
-    "El Fedi Zairi": 8.61,
-    "Aya Hachana": 6.96,
-    "Abidi Fares": 8.61,
-    "Mohamed Aymen Hassini": 9.03,
-    "Arij Aouina": 5.96,
-    "Yasmine Jedidi": 9.34,
-    "Yasmine Ben Ismail": 6.56,
-    "Emna Barbouch": 9.03,
-    "Khammassi Nour": 0.0,
-    "Youssef Mohamed Bechir": 4.0,
-    "Ben Abda Iskander": 8.61,
-    "Yassine Ben Knani": 4.0,
-    "Nabila Ben Zineb": 0.35,
-    "Mourad Kochkar": 0.35,
-    "Elyes Cyril Boughedir": 9.34,
-    "Rania Ben Moussa": 4.0,
-    "Mohamed Amine Neffati": 6.96,
-    "Mohamed Amin Boukettaya": 9.34,
-    "Mohamed Bettaieb Marouen": 16.96,
-    "Nour Chouchane": 18.61
-  },
-  "Mohamed Yamoun Hamdi": {
-    "Seif Eddine Mezned": 7.19,
-    "Mahdi Soudani": 0.0,
-    "Mimouna Baya Chaaben": 2.34,
-    "Mohamed Aziz Souissi": 7.69,
-    "Ahmed Said Mohamed": 3.23,
-    "Aymen El Hadhri": 8.68,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Amine Zekri": 7.69,
-    "El Fedi Zairi": 7.69,
-    "Aya Hachana": 6.01,
-    "Abidi Fares": 7.69,
-    "Mohamed Aymen Hassini": 0.0,
-    "Arij Aouina": 3.23,
-    "Yasmine Jedidi": 0.19,
-    "Yasmine Ben Ismail": 2.34,
-    "Emna Barbouch": 0.0,
-    "Khammassi Nour": 8.68,
-    "Youssef Mohamed Bechir": 9.45,
-    "Ben Abda Iskander": 7.69,
-    "Yassine Ben Knani": 9.45,
-    "Nabila Ben Zineb": 2.17,
-    "Mourad Kochkar": 2.17,
-    "Elyes Cyril Boughedir": 0.19,
-    "Rania Ben Moussa": 9.45,
-    "Mohamed Amine Neffati": 6.01,
-    "Mohamed Amin Boukettaya": 0.19,
-    "Mohamed Bettaieb Marouen": 16.01,
-    "Nour Chouchane": 7.69
-  },
-  "Abdelkarim Elhamdi": {
-    "Seif Eddine Mezned": 5.19,
-    "Mahdi Soudani": 0.0,
-    "Mimouna Baya Chaaben": 2.34,
-    "Mohamed Aziz Souissi": 7.69,
-    "Ahmed Said Mohamed": 3.23,
-    "Aymen El Hadhri": 2.68,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Amine Zekri": 7.69,
-    "El Fedi Zairi": 7.69,
-    "Aya Hachana": 6.01,
-    "Abidi Fares": 3.69,
-    "Mohamed Aymen Hassini": 0.0,
-    "Arij Aouina": 3.23,
-    "Yasmine Jedidi": 7.19,
-    "Yasmine Ben Ismail": 2.34,
-    "Emna Barbouch": 0.0,
-    "Khammassi Nour": 8.68,
-    "Youssef Mohamed Bechir": 9.45,
-    "Ben Abda Iskander": 0.12,
-    "Yassine Ben Knani": 9.45,
-    "Nabila Ben Zineb": 2.17,
-    "Mourad Kochkar": 2.17,
-    "Elyes Cyril Boughedir": 0.19,
-    "Rania Ben Moussa": 9.45,
-    "Mohamed Amine Neffati": 6.01,
-    "Mohamed Amin Boukettaya": 7.19,
-    "Mohamed Bettaieb Marouen": 6.01,
-    "Nour Chouchane": 7.69
-  },
-  "Mohamed Amine Zekri": {
-    "Seif Eddine Mezned": 2.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 0.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 8.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
-    "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 4.77,
-    "Yasmine Jedidi": 8.15,
-    "Yasmine Ben Ismail": 9.93,
-    "Emna Barbouch": 7.84,
-    "Khammassi Nour": 8.56,
-    "Youssef Mohamed Bechir": 2.81,
-    "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 1.37,
-    "Mourad Kochkar": 6.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 2.81,
-    "Mohamed Amine Neffati": 25.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 25.77,
-    "Nour Chouchane": 0.67
-  },
-  "El Fedi Zairi": {
-    "Seif Eddine Mezned": 26.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 9.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 8.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
-    "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 4.77,
-    "Yasmine Jedidi": 8.15,
-    "Yasmine Ben Ismail": 9.93,
-    "Emna Barbouch": 7.84,
-    "Khammassi Nour": 8.56,
-    "Youssef Mohamed Bechir": 2.81,
-    "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 6.37,
-    "Mourad Kochkar": 6.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 0.81,
-    "Mohamed Amine Neffati": 5.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 25.77,
-    "Nour Chouchane": 0.3
-  },
-  "Aya Hachana": {
-    "Seif Eddine Mezned": 6.64,
-    "Mahdi Soudani": 6.33,
-    "Mimouna Baya Chaaben": 9.94,
-    "Mohamed Aziz Souissi": 5.29,
-    "Ahmed Said Mohamed": 9.26,
-    "Aymen El Hadhri": 6.28,
-    "Mohamed Yamoun Hamdi": 6.33,
-    "Abdelkarim Elhamdi": 6.33,
-    "Mohamed Amine Zekri": 5.29,
-    "El Fedi Zairi": 5.29,
-    "Aya Hachana": 0.0,
-    "Abidi Fares": 5.29,
-    "Mohamed Aymen Hassini": 6.33,
-    "Arij Aouina": 3.26,
-    "Yasmine Jedidi": 6.64,
-    "Yasmine Ben Ismail": 9.94,
-    "Emna Barbouch": 6.33,
-    "Khammassi Nour": 6.28,
-    "Youssef Mohamed Bechir": 7.04,
-    "Ben Abda Iskander": 5.29,
-    "Yassine Ben Knani": 7.04,
-    "Nabila Ben Zineb": 9.77,
-    "Mourad Kochkar": 9.77,
-    "Elyes Cyril Boughedir": 6.64,
-    "Rania Ben Moussa": 7.04,
-    "Mohamed Amine Neffati": 0.2,
-    "Mohamed Amin Boukettaya": 6.64,
-    "Mohamed Bettaieb Marouen": 0.0,
-    "Nour Chouchane": 25.29
-  },
-  "Abidi Fares": {
-    "Seif Eddine Mezned": 8.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 9.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 8.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
-    "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 4.77,
-    "Yasmine Jedidi": 2.15,
-    "Yasmine Ben Ismail": 1.93,
-    "Emna Barbouch": 3.84,
-    "Khammassi Nour": 8.56,
-    "Youssef Mohamed Bechir": 2.81,
-    "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 6.37,
-    "Mourad Kochkar": 3.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 2.81,
-    "Mohamed Amine Neffati": 5.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 5.77,
-    "Nour Chouchane": 0.2
-  },
-  "Mohamed Aymen Hassini": {
-    "Seif Eddine Mezned": 1.19,
-    "Mahdi Soudani": 0.02,
-    "Mimouna Baya Chaaben": 2.34,
-    "Mohamed Aziz Souissi": 7.69,
-    "Ahmed Said Mohamed": 3.23,
-    "Aymen El Hadhri": 8.68,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Amine Zekri": 7.69,
-    "El Fedi Zairi": 7.69,
-    "Aya Hachana": 6.01,
-    "Abidi Fares": 7.69,
-    "Mohamed Aymen Hassini": 0.0,
-    "Arij Aouina": 3.23,
-    "Yasmine Jedidi": 0.19,
-    "Yasmine Ben Ismail": 2.34,
-    "Emna Barbouch": 0.0,
-    "Khammassi Nour": 8.68,
-    "Youssef Mohamed Bechir": 9.45,
-    "Ben Abda Iskander": 7.69,
-    "Yassine Ben Knani": 9.45,
-    "Nabila Ben Zineb": 2.17,
-    "Mourad Kochkar": 2.17,
-    "Elyes Cyril Boughedir": 0.19,
-    "Rania Ben Moussa": 9.45,
-    "Mohamed Amine Neffati": 6.01,
-    "Mohamed Amin Boukettaya": 0.19,
-    "Mohamed Bettaieb Marouen": 6.01,
-    "Nour Chouchane": 7.69
-  },
-  "Arij Aouina": {
-    "Seif Eddine Mezned": 2.39,
-    "Mahdi Soudani": 2.86,
-    "Mimouna Baya Chaaben": 9.53,
-    "Mohamed Aziz Souissi": 4.89,
-    "Ahmed Said Mohamed": 0.0,
-    "Aymen El Hadhri": 5.88,
-    "Mohamed Yamoun Hamdi": 2.86,
-    "Abdelkarim Elhamdi": 5.86,
-    "Mohamed Amine Zekri": 4.89,
-    "El Fedi Zairi": 4.89,
-    "Aya Hachana": 3.2,
-    "Abidi Fares": 4.89,
-    "Mohamed Aymen Hassini": 5.86,
-    "Arij Aouina": 0.0,
-    "Yasmine Jedidi": 27.39,
-    "Yasmine Ben Ismail": 9.53,
-    "Emna Barbouch": 2.86,
-    "Khammassi Nour": 5.88,
-    "Youssef Mohamed Bechir": 6.64,
-    "Ben Abda Iskander": 2.89,
-    "Yassine Ben Knani": 6.64,
-    "Nabila Ben Zineb": 1.37,
-    "Mourad Kochkar": 1.37,
-    "Elyes Cyril Boughedir": 27.39,
-    "Rania Ben Moussa": 2.64,
-    "Mohamed Amine Neffati": 3.2,
-    "Mohamed Amin Boukettaya": 7.39,
-    "Mohamed Bettaieb Marouen": 3.2,
-    "Nour Chouchane": 4.89
-  },
-  "Yasmine Jedidi": {
-    "Seif Eddine Mezned": 0.03,
-    "Mahdi Soudani": 0.19,
-    "Mimouna Baya Chaaben": 2.82,
-    "Mohamed Aziz Souissi": 8.18,
-    "Ahmed Said Mohamed": 7.12,
-    "Aymen El Hadhri": 9.17,
-    "Mohamed Yamoun Hamdi": 0.19,
-    "Abdelkarim Elhamdi": 0.19,
-    "Mohamed Amine Zekri": 8.18,
-    "El Fedi Zairi": 8.18,
-    "Aya Hachana": 6.49,
-    "Abidi Fares": 8.18,
-    "Mohamed Aymen Hassini": 0.19,
-    "Arij Aouina": 7.12,
-    "Yasmine Jedidi": 0.0,
-    "Yasmine Ben Ismail": 2.82,
-    "Emna Barbouch": 0.19,
-    "Khammassi Nour": 9.17,
-    "Youssef Mohamed Bechir": 9.93,
-    "Ben Abda Iskander": 8.18,
-    "Yassine Ben Knani": 9.93,
-    "Nabila Ben Zineb": 2.66,
-    "Mourad Kochkar": 2.66,
-    "Elyes Cyril Boughedir": 0.0,
-    "Rania Ben Moussa": 9.93,
-    "Mohamed Amine Neffati": 6.49,
-    "Mohamed Amin Boukettaya": 1.4,
-    "Mohamed Bettaieb Marouen": 6.49,
-    "Nour Chouchane": 8.18
-  },
-  "Yasmine Ben Ismail": {
-    "Seif Eddine Mezned": 3.62,
-    "Mahdi Soudani": 3.3,
-    "Mimouna Baya Chaaben": 0.0,
-    "Mohamed Aziz Souissi": 1.22,
-    "Ahmed Said Mohamed": 0.24,
-    "Aymen El Hadhri": 7.57,
-    "Mohamed Yamoun Hamdi": 3.3,
-    "Abdelkarim Elhamdi": 3.3,
-    "Mohamed Amine Zekri": 1.22,
-    "El Fedi Zairi": 1.22,
-    "Aya Hachana": 1.23,
-    "Abidi Fares": 1.22,
-    "Mohamed Aymen Hassini": 3.3,
-    "Arij Aouina": 0.24,
-    "Yasmine Jedidi": 3.62,
-    "Yasmine Ben Ismail": 0.0,
-    "Emna Barbouch": 0.3,
-    "Khammassi Nour": 7.57,
-    "Youssef Mohamed Bechir": 2.77,
-    "Ben Abda Iskander": 1.22,
-    "Yassine Ben Knani": 2.77,
-    "Nabila Ben Zineb": 1.83,
-    "Mourad Kochkar": 1.83,
-    "Elyes Cyril Boughedir": 4.62,
-    "Rania Ben Moussa": 2.77,
-    "Mohamed Amine Neffati": 1.23,
-    "Mohamed Amin Boukettaya": 3.62,
-    "Mohamed Bettaieb Marouen": 1.23,
-    "Nour Chouchane": 1.22
-  },
-  "Emna Barbouch": {
-    "Seif Eddine Mezned": 7.19,
-    "Mahdi Soudani": 0.2,
-    "Mimouna Baya Chaaben": 2.34,
-    "Mohamed Aziz Souissi": 7.69,
-    "Ahmed Said Mohamed": 3.23,
-    "Aymen El Hadhri": 8.68,
-    "Mohamed Yamoun Hamdi": 0.0,
-    "Abdelkarim Elhamdi": 0.0,
-    "Mohamed Amine Zekri": 7.69,
-    "El Fedi Zairi": 7.69,
-    "Aya Hachana": 6.01,
-    "Abidi Fares": 7.69,
-    "Mohamed Aymen Hassini": 0.0,
-    "Arij Aouina": 3.23,
-    "Yasmine Jedidi": 0.19,
-    "Yasmine Ben Ismail": 2.34,
-    "Emna Barbouch": 0.0,
-    "Khammassi Nour": 8.68,
-    "Youssef Mohamed Bechir": 9.45,
-    "Ben Abda Iskander": 7.69,
-    "Yassine Ben Knani": 9.45,
-    "Nabila Ben Zineb": 2.17,
-    "Mourad Kochkar": 2.17,
-    "Elyes Cyril Boughedir": 7.19,
-    "Rania Ben Moussa": 0.2,
-    "Mohamed Amine Neffati": 6.01,
-    "Mohamed Amin Boukettaya": 0.19,
-    "Mohamed Bettaieb Marouen": 16.01,
-    "Nour Chouchane": 7.69
-  },
-  "Khammassi Nour": {
-    "Seif Eddine Mezned": 9.34,
-    "Mahdi Soudani": 9.03,
-    "Mimouna Baya Chaaben": 6.56,
-    "Mohamed Aziz Souissi": 8.61,
-    "Ahmed Said Mohamed": 5.96,
-    "Aymen El Hadhri": 0.0,
-    "Mohamed Yamoun Hamdi": 9.03,
-    "Abdelkarim Elhamdi": 9.03,
-    "Mohamed Amine Zekri": 8.61,
-    "El Fedi Zairi": 8.61,
-    "Aya Hachana": 1.96,
-    "Abidi Fares": 8.61,
-    "Mohamed Aymen Hassini": 9.03,
-    "Arij Aouina": 5.96,
-    "Yasmine Jedidi": 9.34,
-    "Yasmine Ben Ismail": 6.56,
-    "Emna Barbouch": 9.03,
-    "Khammassi Nour": 0.0,
-    "Youssef Mohamed Bechir": 10.4,
-    "Ben Abda Iskander": 8.61,
-    "Yassine Ben Knani": 4.0,
-    "Nabila Ben Zineb": 0.35,
-    "Mourad Kochkar": 0.35,
-    "Elyes Cyril Boughedir": 9.34,
-    "Rania Ben Moussa": 4.0,
-    "Mohamed Amine Neffati": 6.96,
-    "Mohamed Amin Boukettaya": 9.34,
-    "Mohamed Bettaieb Marouen": 6.96,
-    "Nour Chouchane": 18.61
-  },
-  "Youssef Mohamed Bechir": {
-    "Seif Eddine Mezned": 1.48,
-    "Mahdi Soudani": 8.17,
-    "Mimouna Baya Chaaben": 1.34,
-    "Mohamed Aziz Souissi": 6.46,
-    "Ahmed Said Mohamed": 5.1,
-    "Aymen El Hadhri": 3.56,
-    "Mohamed Yamoun Hamdi": 8.17,
-    "Abdelkarim Elhamdi": 8.17,
-    "Mohamed Amine Zekri": 6.46,
-    "El Fedi Zairi": 6.46,
-    "Aya Hachana": 6.1,
-    "Abidi Fares": 6.46,
-    "Mohamed Aymen Hassini": 8.17,
-    "Arij Aouina": 5.1,
-    "Yasmine Jedidi": 8.48,
-    "Yasmine Ben Ismail": 1.34,
-    "Emna Barbouch": 8.17,
-    "Khammassi Nour": 3.56,
-    "Youssef Mohamed Bechir": 0.0,
-    "Ben Abda Iskander": 6.46,
-    "Yassine Ben Knani": 0.0,
-    "Nabila Ben Zineb": 6.15,
-    "Mourad Kochkar": 6.15,
-    "Elyes Cyril Boughedir": 8.48,
-    "Rania Ben Moussa": 0.0,
-    "Mohamed Amine Neffati": 6.1,
-    "Mohamed Amin Boukettaya": 8.48,
-    "Mohamed Bettaieb Marouen": 16.1,
-    "Nour Chouchane": 16.46
-  },
-  "Ben Abda Iskander": {
-    "Seif Eddine Mezned": 8.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 9.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 8.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
-    "Mohamed Amine Zekri": 0.0,
-    "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
-    "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 2.77,
-    "Yasmine Jedidi": 8.15,
-    "Yasmine Ben Ismail": 9.93,
-    "Emna Barbouch": 7.84,
-    "Khammassi Nour": 8.56,
-    "Youssef Mohamed Bechir": 2.81,
-    "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 6.37,
-    "Mourad Kochkar": 6.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 2.81,
-    "Mohamed Amine Neffati": 5.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 25.77,
-    "Nour Chouchane": 0.2
-  },
-  "Yassine Ben Knani": {
-    "Seif Eddine Mezned": 18.48,
-    "Mahdi Soudani": 8.17,
-    "Mimouna Baya Chaaben": 1.34,
-    "Mohamed Aziz Souissi": 6.46,
-    "Ahmed Said Mohamed": 5.1,
-    "Aymen El Hadhri": 3.56,
-    "Mohamed Yamoun Hamdi": 8.17,
-    "Abdelkarim Elhamdi": 8.17,
-    "Mohamed Amine Zekri": 6.46,
-    "El Fedi Zairi": 6.46,
-    "Aya Hachana": 6.1,
-    "Abidi Fares": 6.46,
-    "Mohamed Aymen Hassini": 8.17,
-    "Arij Aouina": 215.1,
-    "Yasmine Jedidi": 8.48,
-    "Yasmine Ben Ismail": 1.34,
-    "Emna Barbouch": 8.17,
-    "Khammassi Nour": 3.56,
-    "Youssef Mohamed Bechir": 0.0,
-    "Ben Abda Iskander": 6.46,
-    "Yassine Ben Knani": 0.0,
-    "Nabila Ben Zineb": 16.15,
-    "Mourad Kochkar": 6.15,
-    "Elyes Cyril Boughedir": 8.48,
-    "Rania Ben Moussa": 0.0,
-    "Mohamed Amine Neffati": 6.1,
-    "Mohamed Amin Boukettaya": 8.48,
-    "Mohamed Bettaieb Marouen": 6.1,
-    "Nour Chouchane": 16.46
-  },
-  "Nabila Ben Zineb": {
-    "Seif Eddine Mezned": 4.19,
-    "Mahdi Soudani": 0.88,
-    "Mimouna Baya Chaaben": 0.88,
-    "Mohamed Aziz Souissi": 6.24,
-    "Ahmed Said Mohamed": 3.81,
-    "Aymen El Hadhri": 2.02,
-    "Mohamed Yamoun Hamdi": 6.88,
-    "Abdelkarim Elhamdi": 6.88,
-    "Mohamed Amine Zekri": 6.24,
-    "El Fedi Zairi": 6.24,
-    "Aya Hachana": 4.81,
-    "Abidi Fares": 6.24,
-    "Mohamed Aymen Hassini": 6.88,
-    "Arij Aouina": 3.81,
-    "Yasmine Jedidi": 7.19,
-    "Yasmine Ben Ismail": 0.88,
-    "Emna Barbouch": 6.88,
-    "Khammassi Nour": 6.02,
-    "Youssef Mohamed Bechir": 0.07,
-    "Ben Abda Iskander": 6.24,
-    "Yassine Ben Knani": 7.07,
-    "Nabila Ben Zineb": 0.0,
-    "Mourad Kochkar": 0.0,
-    "Elyes Cyril Boughedir": 7.19,
-    "Rania Ben Moussa": 7.07,
-    "Mohamed Amine Neffati": 14.81,
-    "Mohamed Amin Boukettaya": 7.19,
-    "Mohamed Bettaieb Marouen": 4.81,
-    "Nour Chouchane": 16.24
-  },
-  "Mourad Kochkar": {
-    "Seif Eddine Mezned": 7.19,
-    "Mahdi Soudani": 6.88,
-    "Mimouna Baya Chaaben": 0.88,
-    "Mohamed Aziz Souissi": 6.24,
-    "Ahmed Said Mohamed": 3.81,
-    "Aymen El Hadhri": 2.02,
-    "Mohamed Yamoun Hamdi": 6.88,
-    "Abdelkarim Elhamdi": 6.88,
-    "Mohamed Amine Zekri": 6.24,
-    "El Fedi Zairi": 1.24,
-    "Aya Hachana": 1.81,
-    "Abidi Fares": 6.24,
-    "Mohamed Aymen Hassini": 2.88,
-    "Arij Aouina": 3.81,
-    "Yasmine Jedidi": 7.19,
-    "Yasmine Ben Ismail": 0.88,
-    "Emna Barbouch": 6.88,
-    "Khammassi Nour": 2.02,
-    "Youssef Mohamed Bechir": 7.07,
-    "Ben Abda Iskander": 6.24,
-    "Yassine Ben Knani": 7.07,
-    "Nabila Ben Zineb": 0.0,
-    "Mourad Kochkar": 0.0,
-    "Elyes Cyril Boughedir": 7.19,
-    "Rania Ben Moussa": 7.07,
-    "Mohamed Amine Neffati": 4.81,
-    "Mohamed Amin Boukettaya": 7.19,
-    "Mohamed Bettaieb Marouen": 1.81,
-    "Nour Chouchane": 6.24
-  },
-  "Elyes Cyril Boughedir": {
-    "Seif Eddine Mezned": 5.6,
-    "Mahdi Soudani": 7.19,
-    "Mimouna Baya Chaaben": 12.82,
-    "Mohamed Aziz Souissi": 8.18,
-    "Ahmed Said Mohamed": 7.12,
-    "Aymen El Hadhri": 9.17,
-    "Mohamed Yamoun Hamdi": 7.19,
-    "Abdelkarim Elhamdi": 7.19,
-    "Mohamed Amine Zekri": 8.18,
-    "El Fedi Zairi": 8.18,
-    "Aya Hachana": 6.49,
-    "Abidi Fares": 8.18,
-    "Mohamed Aymen Hassini": 0.19,
-    "Arij Aouina": 7.12,
-    "Yasmine Jedidi": 0.0,
-    "Yasmine Ben Ismail": 2.82,
-    "Emna Barbouch": 0.19,
-    "Khammassi Nour": 9.17,
-    "Youssef Mohamed Bechir": 9.93,
-    "Ben Abda Iskander": 8.18,
-    "Yassine Ben Knani": 9.93,
-    "Nabila Ben Zineb": 1.66,
-    "Mourad Kochkar": 2.66,
-    "Elyes Cyril Boughedir": 0.0,
-    "Rania Ben Moussa": 9.93,
-    "Mohamed Amine Neffati": 6.49,
     "Mohamed Amin Boukettaya": 0.0,
-    "Mohamed Bettaieb Marouen": 6.49,
-    "Nour Chouchane": 8.18
-  },
-  "Rania Ben Moussa": {
-    "Seif Eddine Mezned": 1.48,
-    "Mahdi Soudani": 8.17,
-    "Mimouna Baya Chaaben": 1.34,
-    "Mohamed Aziz Souissi": 6.46,
-    "Ahmed Said Mohamed": 2.1,
-    "Aymen El Hadhri": 10.56,
-    "Mohamed Yamoun Hamdi": 8.17,
-    "Abdelkarim Elhamdi": 2.17,
-    "Mohamed Amine Zekri": 1.46,
-    "El Fedi Zairi": 1.46,
-    "Aya Hachana": 6.1,
-    "Abidi Fares": 6.46,
-    "Mohamed Aymen Hassini": 8.17,
-    "Arij Aouina": 5.1,
-    "Yasmine Jedidi": 8.48,
-    "Yasmine Ben Ismail": 1.34,
-    "Emna Barbouch": 8.17,
-    "Khammassi Nour": 3.56,
-    "Youssef Mohamed Bechir": 0.0,
-    "Ben Abda Iskander": 6.46,
-    "Yassine Ben Knani": 0.0,
-    "Nabila Ben Zineb": 6.15,
-    "Mourad Kochkar": 0.15,
-    "Elyes Cyril Boughedir": 8.48,
-    "Rania Ben Moussa": 0.0,
-    "Mohamed Amine Neffati": 6.1,
-    "Mohamed Amin Boukettaya": 8.48,
-    "Mohamed Bettaieb Marouen": 6.1,
-    "Nour Chouchane": 6.46
-  },
-  "Mohamed Amine Neffati": {
-    "Seif Eddine Mezned": 6.64,
-    "Mahdi Soudani": 16.33,
-    "Mimouna Baya Chaaben": 9.94,
-    "Mohamed Aziz Souissi": 5.29,
-    "Ahmed Said Mohamed": 3.26,
-    "Aymen El Hadhri": 6.28,
-    "Mohamed Yamoun Hamdi": 6.33,
-    "Abdelkarim Elhamdi": 1.33,
-    "Mohamed Amine Zekri": 2.29,
-    "El Fedi Zairi": 5.29,
-    "Aya Hachana": 0.0,
-    "Abidi Fares": 5.29,
-    "Mohamed Aymen Hassini": 6.33,
-    "Arij Aouina": 3.26,
-    "Yasmine Jedidi": 6.64,
-    "Yasmine Ben Ismail": 9.94,
-    "Emna Barbouch": 6.33,
-    "Khammassi Nour": 6.28,
-    "Youssef Mohamed Bechir": 7.04,
-    "Ben Abda Iskander": 5.29,
-    "Yassine Ben Knani": 7.04,
-    "Nabila Ben Zineb": 9.77,
-    "Mourad Kochkar": 9.77,
-    "Elyes Cyril Boughedir": 6.64,
-    "Rania Ben Moussa": 7.04,
-    "Mohamed Amine Neffati": 0.0,
-    "Mohamed Amin Boukettaya": 6.64,
-    "Mohamed Bettaieb Marouen": 0.2,
-    "Nour Chouchane": 5.29
+    "Elyes Cyril Boughedir": 0.08,
+    "Emna Barbouch": 0.19,
+    "Yasmine Jedidi": 0.03
   },
   "Mohamed Amin Boukettaya": {
     "Seif Eddine Mezned": 0.0,
-    "Mahdi Soudani": 0.19,
-    "Mimouna Baya Chaaben": 2.82,
-    "Mohamed Aziz Souissi": 8.18,
-    "Ahmed Said Mohamed": 7.12,
-    "Aymen El Hadhri": 9.17,
-    "Mohamed Yamoun Hamdi": 0.19,
-    "Abdelkarim Elhamdi": 0.19,
-    "Mohamed Amine Zekri": 8.18,
-    "El Fedi Zairi": 8.18,
-    "Aya Hachana": 6.49,
-    "Abidi Fares": 8.18,
-    "Mohamed Aymen Hassini": 0.19,
-    "Arij Aouina": 7.12,
+    "Ahmed Said Mohamed": 2.39,
+    "Elyes Cyril Boughedir": 0.0,
     "Yasmine Jedidi": 0.0,
-    "Yasmine Ben Ismail": 2.82,
-    "Emna Barbouch": 0.19,
-    "Khammassi Nour": 9.17,
-    "Youssef Mohamed Bechir": 9.93,
-    "Ben Abda Iskander": 8.18,
-    "Yassine Ben Knani": 9.93,
-    "Nabila Ben Zineb": 2.66,
-    "Mourad Kochkar": 2.66,
-    "Elyes Cyril Boughedir": 0.2,
-    "Rania Ben Moussa": 9.93,
-    "Mohamed Amine Neffati": 6.49,
+    "Mahdi Soudani": 0.19
+  },
+  "Elyes Cyril Boughedir": {
+    "Seif Eddine Mezned": 0.08,
     "Mohamed Amin Boukettaya": 0.0,
-    "Mohamed Bettaieb Marouen": 6.49,
-    "Nour Chouchane": 8.18
+    "Yasmine Jedidi": 0.0,
+    "Mohamed Aymen Hassini": 0.19
   },
-  "Mohamed Bettaieb Marouen": {
-    "Seif Eddine Mezned": 6.64,
-    "Mahdi Soudani": 16.33,
-    "Mimouna Baya Chaaben": 9.94,
-    "Mohamed Aziz Souissi": 5.29,
-    "Ahmed Said Mohamed": 3.26,
-    "Aymen El Hadhri": 6.28,
-    "Mohamed Yamoun Hamdi": 6.33,
-    "Abdelkarim Elhamdi": 1.33,
-    "Mohamed Amine Zekri": 5.29,
-    "El Fedi Zairi": 5.29,
-    "Aya Hachana": 0.0,
-    "Abidi Fares": 5.29,
-    "Mohamed Aymen Hassini": 16.33,
-    "Arij Aouina": 3.26,
-    "Yasmine Jedidi": 6.64,
-    "Yasmine Ben Ismail": 9.94,
-    "Emna Barbouch": 1.33,
-    "Khammassi Nour": 6.28,
-    "Youssef Mohamed Bechir": 7.04,
-    "Ben Abda Iskander": 5.29,
-    "Yassine Ben Knani": 7.04,
-    "Nabila Ben Zineb": 9.77,
-    "Mourad Kochkar": 9.77,
-    "Elyes Cyril Boughedir": 6.64,
-    "Rania Ben Moussa": 7.04,
-    "Mohamed Amine Neffati": 0.0,
-    "Mohamed Amin Boukettaya": 6.64,
-    "Mohamed Bettaieb Marouen": 0.0,
-    "Nour Chouchane": 5.29
+  "Emna Barbouch": {
+    "Seif Eddine Mezned": 0.19,
+    "Mohamed Aymen Hassini": 0.0,
+    "Mohamed Yamoun Hamdi": 0.0,
+    "Abdelkarim Elhamdi": 0.0
   },
-  "Nour Chouchane": {
-    "Seif Eddine Mezned": 8.15,
-    "Mahdi Soudani": 7.84,
-    "Mimouna Baya Chaaben": 19.93,
-    "Mohamed Aziz Souissi": 0.0,
-    "Ahmed Said Mohamed": 4.77,
-    "Aymen El Hadhri": 18.56,
-    "Mohamed Yamoun Hamdi": 7.84,
-    "Abdelkarim Elhamdi": 7.84,
+  "Mahdi Soudani": {
+    "Mohamed Amin Boukettaya": 0.19,
+    "Mohamed Yamoun Hamdi": 0.0,
+    "Abdelkarim Elhamdi": 0.0,
+    "Mohamed Aymen Hassini": 0.0,
+    "Yasmine Jedidi": 0.19,
+    "Nabila Ben Zineb": 0.88
+  },
+  "Mohamed Yamoun Hamdi": {
+    "Emna Barbouch": 0.0,
+    "Mahdi Soudani": 0.0,
+    "Abdelkarim Elhamdi": 0.0,
+    "Mohamed Aymen Hassini": 0.0
+  },
+  "Abdelkarim Elhamdi": {
+    "Emna Barbouch": 0.0,
+    "Mahdi Soudani": 0.0,
+    "Mohamed Yamoun Hamdi": 0.0,
+    "Mohamed Aymen Hassini": 0.0,
+    "Mohamed Amine Neffati": 1.33,
+    "Mohamed Bettaieb Marouen": 1.33
+  },
+  "Mohamed Aymen Hassini": {
+    "Elyes Cyril Boughedir": 0.19,
+    "Emna Barbouch": 0.0,
+    "Mahdi Soudani": 0.0,
+    "Mohamed Yamoun Hamdi": 0.0,
+    "Abdelkarim Elhamdi": 0.0
+  },
+  "Mimouna Baya Chaaben": {
+    "Yasmine Ben Ismail": 0.0,
+    "Ahmed Said Mohamed": 0.24,
+    "Arij Aouina": 0.24,
+    "Youssef Mohamed Bechir": 1.34,
+    "Yassine Ben Knani": 1.34,
+    "Mourad Kochkar": 0.88
+  },
+  "Yasmine Ben Ismail": {
+    "Mimouna Baya Chaaben": 0.0,
+    "Ahmed Said Mohamed": 0.24,
+    "Arij Aouina": 0.24,
+    "Mourad Kochkar": 0.88
+  },
+  "Ahmed Said Mohamed": {
+    "Mohamed Amin Boukettaya": 2.39,
+    "Mimouna Baya Chaaben": 0.24,
+    "Yasmine Ben Ismail": 0.24,
+    "Arij Aouina": 0.0,
+    "Nabila Ben Zineb": 1.37
+  },
+  "Arij Aouina": {
+    "Mimouna Baya Chaaben": 0.24,
+    "Yasmine Ben Ismail": 0.24,
+    "Ahmed Said Mohamed": 0.0,
+    "Aya Hachana": 3.26,
+    "Nabila Ben Zineb": 1.37,
+    "Mourad Kochkar": 1.37
+  },
+  "Mohamed Aziz Souissi": {
     "Mohamed Amine Zekri": 0.0,
     "El Fedi Zairi": 0.0,
-    "Aya Hachana": 5.77,
     "Abidi Fares": 0.0,
-    "Mohamed Aymen Hassini": 7.84,
-    "Arij Aouina": 4.77,
-    "Yasmine Jedidi": 2.15,
-    "Yasmine Ben Ismail": 9.93,
-    "Emna Barbouch": 7.84,
-    "Khammassi Nour": 0.56,
-    "Youssef Mohamed Bechir": 2.81,
     "Ben Abda Iskander": 0.0,
-    "Yassine Ben Knani": 2.81,
-    "Nabila Ben Zineb": 6.37,
-    "Mourad Kochkar": 6.37,
-    "Elyes Cyril Boughedir": 8.15,
-    "Rania Ben Moussa": 2.81,
-    "Mohamed Amine Neffati": 5.77,
-    "Mohamed Amin Boukettaya": 8.15,
-    "Mohamed Bettaieb Marouen": 5.77,
     "Nour Chouchane": 0.0
+  },
+  "Mohamed Amine Zekri": {
+    "Mohamed Aziz Souissi": 0.0,
+    "El Fedi Zairi": 0.0,
+    "Abidi Fares": 0.0,
+    "Ben Abda Iskander": 0.0,
+    "Nour Chouchane": 0.0
+  },
+  "El Fedi Zairi": {
+    "Mohamed Aziz Souissi": 0.0,
+    "Mohamed Amine Zekri": 0.0,
+    "Abidi Fares": 0.0,
+    "Ben Abda Iskander": 0.0,
+    "Nour Chouchane": 0.0
+  },
+  "Abidi Fares": {
+    "Mohamed Aziz Souissi": 0.0,
+    "Mohamed Amine Zekri": 0.0,
+    "El Fedi Zairi": 0.0,
+    "Ben Abda Iskander": 0.0,
+    "Nour Chouchane": 0.0
+  },
+  "Nabila Ben Zineb": {
+    "Mahdi Soudani": 0.88,
+    "Ahmed Said Mohamed": 1.37,
+    "Arij Aouina": 1.37,
+    "Aymen El Hadhri": 0.35,
+    "Khammassi Nour": 0.35,
+    "Mourad Kochkar": 0.0,
+    "Youssef Mohamed Bechir": 0.07
+  },
+  "Aymen El Hadhri": {
+    "Nabila Ben Zineb": 0.35,
+    "Khammassi Nour": 0.0,
+    "Mourad Kochkar": 0.35
+  },
+  "Khammassi Nour": {
+    "Nabila Ben Zineb": 0.35,
+    "Aymen El Hadhri": 0.0,
+    "Mourad Kochkar": 0.35
+  },
+  "Mourad Kochkar": {
+    "Mimouna Baya Chaaben": 0.88,
+    "Yasmine Ben Ismail": 0.88,
+    "Arij Aouina": 1.37,
+    "Nabila Ben Zineb": 0.0,
+    "Aymen El Hadhri": 0.35,
+    "Khammassi Nour": 0.35,
+    "Rania Ben Moussa": 0.15
+  },
+  "Aya Hachana": {
+    "Arij Aouina": 3.26,
+    "Mohamed Bettaieb Marouen": 0.0,
+    "Mohamed Amine Neffati": 0.0
+  },
+  "Mohamed Bettaieb Marouen": {
+    "Abdelkarim Elhamdi": 1.33,
+    "Aya Hachana": 0.0,
+    "Mohamed Amine Neffati": 0.0
+  },
+  "Mohamed Amine Neffati": {
+    "Abdelkarim Elhamdi": 1.33,
+    "Aya Hachana": 0.0,
+    "Mohamed Bettaieb Marouen": 0.0
+  },
+  "Yasmine Jedidi": {
+    "Seif Eddine Mezned": 0.03,
+    "Mohamed Amin Boukettaya": 0.0,
+    "Elyes Cyril Boughedir": 0.0,
+    "Mahdi Soudani": 0.19
+  },
+  "Youssef Mohamed Bechir": {
+    "Mimouna Baya Chaaben": 1.34,
+    "Nabila Ben Zineb": 0.07,
+    "Yassine Ben Knani": 0.0,
+    "Rania Ben Moussa": 0.0
+  },
+  "Yassine Ben Knani": {
+    "Mimouna Baya Chaaben": 1.34,
+    "Youssef Mohamed Bechir": 0.0,
+    "Rania Ben Moussa": 0.0
+  },
+  "Rania Ben Moussa": {
+    "Mourad Kochkar": 0.15,
+    "Youssef Mohamed Bechir": 0.0,
+    "Yassine Ben Knani": 0.0
+  },
+  "Ben Abda Iskander": {
+    "Mohamed Aziz Souissi": 0.0,
+    "Mohamed Amine Zekri": 0.0,
+    "El Fedi Zairi": 0.0,
+    "Abidi Fares": 0.0
+  },
+  "Nour Chouchane": {
+    "Mohamed Aziz Souissi": 0.0,
+    "Mohamed Amine Zekri": 0.0,
+    "El Fedi Zairi": 0.0,
+    "Abidi Fares": 0.0
   }
 }
 
@@ -919,63 +208,57 @@ def create_graph(dist_dict):
 
 G = create_graph(distance_dict)
 
+# Positions fixed for consistent graph display
+pos = nx.spring_layout(G, seed=42)
+
+# Session state
 if 'role' not in st.session_state:
     st.session_state.role = None
 if 'requests' not in st.session_state:
     st.session_state.requests = {}
 if 'accepted' not in st.session_state:
     st.session_state.accepted = {}
+if 'declined' not in st.session_state:
+    st.session_state.declined = {}
 
-st.title("🚗 SMU Carpooling Network App")
+st.title("🚗 SMU Carpooling App")
 
 current_user = st.selectbox("Select your name:", students)
+
 if st.session_state.role is None:
     st.session_state.role = st.radio("Choose your role:", ["Driver", "Passenger"])
 
 random.seed(42)
-drivers = random.sample([s for s in students if s != current_user], min(7, len(students) - 1))
+drivers = random.sample([s for s in students if s != current_user], min(7, len(students)-1))
 
-# --------- GRAPH 1: MAIN NETWORK WITH 3 SHORTEST EDGES DISPLAYED -------------
-st.markdown("""### 🌐 Global Carpool Network  
-_Only the 3 shortest distance connections are shown_""")
+# --------- GRAPH 1: everyone, 3 closest edges each ---------
+st.markdown("### 🌐 All Students: Each Connected to 3 Nearest Neighbors")
 fig1, ax1 = plt.subplots(figsize=(10, 8))
-pos = nx.spring_layout(G, seed=42)
-
-# Draw full nodes
-nx.draw_networkx_nodes(G, pos, ax=ax1, node_size=500)
-nx.draw_networkx_labels(G, pos, ax=ax1, font_size=8)
-
-# Only draw 3 shortest edges
-edges_sorted = sorted(G.edges(data=True), key=lambda x: x[2]['weight'])[:3]
-nx.draw_networkx_edges(G, pos, edgelist=edges_sorted, ax=ax1, width=2)
-edge_labels = {(u, v): f"{d['weight']:.1f} km" for u, v, d in edges_sorted}
+nx.draw(G, pos, with_labels=True, node_size=500, font_size=8, ax=ax1)
+edge_labels = {(u, v): f"{d['weight']:.1f} km" for u, v, d in G.edges(data=True)}
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax1, font_size=7)
-
 st.pyplot(fig1)
 
-# --------- GRAPH 2: SELECT DRIVER AND SHOW NEAREST PASSENGERS -------------
-st.markdown("""### 👤 Select a Driver to View Nearby Passengers (Shortest Paths)
-Choose any driver to visualize shortest paths to other students.""")
-selected_driver = st.selectbox("Select a driver:", drivers)
+# --------- GRAPH 2: driver + 3 nearest neighbors ---------
+st.markdown("### 🚘 Visualize Any Driver's Nearby Passengers")
+selected_driver = st.selectbox("Select driver to visualize:", drivers)
 fig2, ax2 = plt.subplots(figsize=(10, 8))
-shortest_path_graph = nx.Graph()
-
-# Get 3 nearest neighbors
-distances = distance_dict[selected_driver]
-nearest = sorted(distances.items(), key=lambda x: x[1] if x[0] != selected_driver else float('inf'))[:3]
+shortest_graph = nx.Graph()
+dists = distance_dict[selected_driver]
+nearest = sorted(dists.items(), key=lambda x: x[1])[:4]
 for p, _ in nearest:
-    path = nx.shortest_path(G, source=selected_driver, target=p, weight='weight')
-    nx.add_path(shortest_path_graph, path)
+    if p != selected_driver:
+        path = nx.shortest_path(G, source=selected_driver, target=p, weight='weight')
+        nx.add_path(shortest_graph, path)
 
-# Draw with different color for driver
-color_map = ['red' if node == selected_driver else 'green' for node in shortest_path_graph.nodes()]
-nx.draw(shortest_path_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax2, node_color=color_map)
-edge_labels = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in shortest_path_graph.edges() if G.has_edge(u, v)}
-nx.draw_networkx_edge_labels(shortest_path_graph, pos, edge_labels=edge_labels, ax=ax2, font_size=7)
-ax2.set_title("Red: Driver | Green: Nearby Passengers", fontsize=10)
+colors = ['red' if n == selected_driver else 'green' for n in shortest_graph.nodes()]
+nx.draw(shortest_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax2, node_color=colors)
+edge_labels2 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in shortest_graph.edges() if G.has_edge(u, v)}
+nx.draw_networkx_edge_labels(shortest_graph, pos, edge_labels=edge_labels2, ax=ax2, font_size=7)
+ax2.set_title("Red = Driver | Green = Nearby Passengers")
 st.pyplot(fig2)
 
-# --------- ROLE: DRIVER OR PASSENGER + GRAPH 3 ONLY ON ACCEPT ---------
+# --------- INTERACTIVE: Passenger request -> driver accept/decline ---------
 if st.session_state.role == "Passenger":
     available_drivers = [d for d in drivers if d != current_user]
     selected_driver = st.selectbox("Send carpool request to:", available_drivers)
@@ -984,36 +267,38 @@ if st.session_state.role == "Passenger":
         st.success(f"Request sent to {selected_driver}")
 
 elif st.session_state.role == "Driver":
-    st.markdown(f"### 🚘 Welcome Driver: **{current_user}**")
+    st.markdown(f"### 📥 Carpool Requests for Driver **{current_user}**")
     requests = st.session_state.requests.get(current_user, [])
     if requests:
         for passenger in requests:
-            col1, col2 = st.columns([2,1])
+            col1, col2, col3 = st.columns([3,1,1])
             with col1:
-                st.write(f"Request from: {passenger}") 
+                st.write(f"Passenger: **{passenger}**")
             with col2:
-                if st.button(f"Accept {passenger}", key=f"accept_{passenger}"):
+                if st.button(f"✅ Accept {passenger}", key=f"acc_{passenger}"):
                     st.session_state.accepted.setdefault(current_user, []).append(passenger)
                     st.success(f"Accepted {passenger}")
+            with col3:
+                if st.button(f"❌ Decline {passenger}", key=f"dec_{passenger}"):
+                    st.session_state.declined.setdefault(current_user, []).append(passenger)
+                    st.warning(f"Declined {passenger}")
+    else:
+        st.info("No requests yet.")
 
-    # --------- GRAPH 3: DRIVER + ACCEPTED PASSENGERS ---------
+    # --------- GRAPH 3: accepted passengers only ---------
     if current_user in st.session_state.accepted and st.session_state.accepted[current_user]:
-        st.markdown("### ✅ Confirmed Carpool Group: Shortest Paths Only")
+        st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
         for p in st.session_state.accepted[current_user]:
-            try:
-                path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
-                nx.add_path(final_graph, path)
-            except nx.NetworkXNoPath:
-                st.warning(f"No path to {p}")
-
-        node_colors = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
-        nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=node_colors)
-        edge_labels = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
-        nx.draw_networkx_edge_labels(final_graph, pos, edge_labels=edge_labels, ax=ax3, font_size=7)
-        ax3.set_title("Red: Driver | Green: Accepted Passengers", fontsize=10)
+            path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
+            nx.add_path(final_graph, path)
+        color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
+        nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
+        edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
+        nx.draw_networkx_edge_labels(final_graph, pos, edge_labels=edge_labels3, ax=ax3, font_size=7)
+        ax3.set_title("Red = Driver | Green = Accepted Passengers")
         st.pyplot(fig3)
 
 st.markdown("---")
-st.caption("SMU Carpooling App with Full Routing Logic and Graphs")
+st.caption("SMU Carpooling App | 3 Graph Views + Accept/Decline Logic")
