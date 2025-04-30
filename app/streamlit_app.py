@@ -340,27 +340,27 @@ elif st.session_state.role == "Driver":
             st.success(f"{passenger} has been removed from your ride.")
             removed = True
 
-    # Then render the graph with only accepted passengers + force line from driver
     if st.session_state.accepted[current_user]:
         st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
 
-        # Always draw a line from driver to each accepted passenger
-        for p in st.session_state.accepted[current_user]:
-            if G.has_edge(current_user, p):
-                final_graph.add_edge(current_user, p, weight=G[current_user][p]['weight'])
-            else:
-                final_graph.add_edge(current_user, p, weight=0.1)  # visually force line if no edge exists
+        edge_labels3 = {{}}
 
-        # Add nodes
-        final_graph.add_node(current_user)
         for p in st.session_state.accepted[current_user]:
+            final_graph.add_node(current_user)
             final_graph.add_node(p)
+            try:
+                path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
+                distance = sum(G[path[i]][path[i + 1]]['weight'] for i in range(len(path) - 1))
+                final_graph.add_edge(current_user, p, weight=distance)
+                edge_labels3[(current_user, p)] = f"{distance:.1f} km"
+            except nx.NetworkXNoPath:
+                final_graph.add_edge(current_user, p, weight=0.1)
+                edge_labels3[(current_user, p)] = "n/a"
 
         color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
         nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
-        edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" if G.has_edge(u, v) else "" for u, v in final_graph.edges()}
         nx.draw_networkx_edge_labels(final_graph, pos, edge_labels=edge_labels3, ax=ax3, font_size=7)
         ax3.set_title("Red = Driver | Green = Accepted Passengers")
         st.pyplot(fig3)
