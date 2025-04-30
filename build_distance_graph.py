@@ -8,7 +8,7 @@ from google.colab import files
 uploaded = files.upload()
 
 # Step 1: Read the distance matrix CSV file
-file_name = "data/distance_matrix_km.csv"
+file_name = "distance_matrix_km.csv"
 df = pd.read_csv(file_name, index_col=0)
 
 # Step 2: Create a graph
