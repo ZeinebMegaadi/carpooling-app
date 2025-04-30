@@ -86,10 +86,14 @@ Plan efficient routes to university with smart suggestions based on real distanc
 """)
 
 # --- Load Distance Matrix ---
-
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+    try:
+        df = pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+        return df
+    except Exception as e:
+        st.error(f"❌ Failed to load CSV: {e}")
+        return pd.DataFrame()
 
 dist_df = load_data()
 students = dist_df.index.tolist()
@@ -191,7 +195,7 @@ if role == "Driver":
                 G_route.add_edge(driver, r, weight=dist_df.at[driver, r])
             fig_route, ax_route = plt.subplots(figsize=(6, 6))
             pos_route = nx.spring_layout(G_route, seed=24)
-            node_colors = ['#8B0000'] + ['#006400'] * len(accepted_riders)
+            node_colors = ['red'] + ['green'] * len(accepted_riders)
             nx.draw(G_route, pos_route, node_size=400, node_color=node_colors,
                     with_labels=True, font_weight='bold', font_size=8, ax=ax_route)
             edge_labels = {(driver, r): f"{dist_df.at[driver, r]:.2f} km" for r in accepted_riders}
@@ -225,3 +229,4 @@ with st.sidebar:
             if key in st.session_state:
                 del st.session_state[key]
         st.experimental_rerun()
+        
