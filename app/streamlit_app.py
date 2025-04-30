@@ -4,6 +4,8 @@ import streamlit as st
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
 
 # --- Page Config ---
 st.set_page_config(page_title="Uni Carpooling", layout="wide")
@@ -28,25 +30,32 @@ if "accepted_riders" not in st.session_state:
 MIN_DIST = 0.01
 MAX_DIST = 7.0
 
-# --- Build Full Student Graph ---
-G_full = nx.Graph()
-for i in students:
-    for j in students:
-        if i != j:
-            d = max(dist_df.at[i, j], MIN_DIST)
-            G_full.add_edge(i, j, weight=d)
+# --- Build Graph with Only Nearest Edges ---
+G_full = nx.DiGraph()
+for student in students:
+    dists = dist_df.loc[student].drop(student).apply(lambda x: max(x, MIN_DIST))
+    nearest = dists.nsmallest(3)
+    for neighbor, weight in nearest.items():
+        G_full.add_edge(student, neighbor, weight=weight)
 
-# --- Display Full Graph for Professor ---
-with st.expander("🔍 Full Student Graph"):
-    st.subheader("Graph of All Students and Their Connections")
-    fig_full, ax_full = plt.subplots(figsize=(8, 8))
+# --- Display Directional Graph of Closest Connections ---
+with st.expander("🔍 Full Student Graph (Closest Edges Only)"):
+    st.subheader("Graph of Students with Arrows to 3 Nearest Neighbors")
+    fig_full, ax_full = plt.subplots(figsize=(9, 9))
     pos_full = nx.spring_layout(G_full, seed=42)
-    nx.draw(G_full, pos_full, node_size=300, node_color='lightblue', with_labels=True, font_size=8, ax=ax_full)
-    edge_labels = nx.get_edge_attributes(G_full, 'weight')
-    nx.draw_networkx_edge_labels(G_full, pos_full, edge_labels={k: f"{v:.2f}" for k, v in edge_labels.items()}, font_size=6, ax=ax_full)
+
+    # Color edges by distance
+    weights = np.array([G_full[u][v]['weight'] for u, v in G_full.edges()])
+    norm = plt.Normalize(weights.min(), weights.max())
+    colors = cm.viridis(norm(weights))
+
+    nx.draw_networkx_nodes(G_full, pos_full, node_size=350, node_color='lightblue', ax=ax_full)
+    nx.draw_networkx_labels(G_full, pos_full, font_size=8, ax=ax_full)
+    nx.draw_networkx_edges(G_full, pos_full, edge_color=colors, edge_cmap=cm.viridis, arrows=True, width=2, ax=ax_full)
+    edge_labels = {(u, v): f"{G_full[u][v]['weight']:.2f}" for u, v in G_full.edges()}
+    nx.draw_networkx_edge_labels(G_full, pos_full, edge_labels=edge_labels, font_size=6, ax=ax_full)
     ax_full.set_axis_off()
     st.pyplot(fig_full)
-
 # --- Display Shortest Path Tree Graph ---
 with st.expander("🧭 Shortest Path Tree Graph"):
     st.subheader("Shortest Path Tree from a Starting Student")
