@@ -340,25 +340,27 @@ elif st.session_state.role == "Driver":
             st.success(f"{passenger} has been removed from your ride.")
             removed = True
 
-    # Then render the graph with only accepted passengers + direct edges from driver
+    # Then render the graph with only accepted passengers + force line from driver
     if st.session_state.accepted[current_user]:
         st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
 
-        # Add only driver + accepted passenger nodes and edges
+        # Always draw a line from driver to each accepted passenger
         for p in st.session_state.accepted[current_user]:
             if G.has_edge(current_user, p):
                 final_graph.add_edge(current_user, p, weight=G[current_user][p]['weight'])
+            else:
+                final_graph.add_edge(current_user, p, weight=0.1)  # visually force line if no edge exists
 
-        # Explicitly add the driver and accepted passengers even if no edge exists (to show them visually)
+        # Add nodes
         final_graph.add_node(current_user)
         for p in st.session_state.accepted[current_user]:
             final_graph.add_node(p)
 
         color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
         nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
-        edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
+        edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" if G.has_edge(u, v) else "" for u, v in final_graph.edges()}
         nx.draw_networkx_edge_labels(final_graph, pos, edge_labels=edge_labels3, ax=ax3, font_size=7)
         ax3.set_title("Red = Driver | Green = Accepted Passengers")
         st.pyplot(fig3)
