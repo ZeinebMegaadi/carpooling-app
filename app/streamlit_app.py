@@ -335,8 +335,16 @@ elif st.session_state.role == "Driver":
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
         for p in st.session_state.accepted[current_user]:
-            if G.has_edge(current_user, p):
-                final_graph.add_edge(current_user, p, weight=G[current_user][p]['weight'])
+            try:
+                path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
+                if len(path) == 2 and G.has_edge(current_user, p):
+                    final_graph.add_edge(current_user, p, weight=G[current_user][p]['weight'])
+                else:
+                    # if not directly connected, still add as disconnected node to visualize
+                    final_graph.add_node(current_user)
+                    final_graph.add_node(p)
+            except nx.NetworkXNoPath:
+                st.warning(f"No path to {p}")
         color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
         nx.draw(final_graph, pos, with_labels=True, node_size=500, font_size=8, ax=ax3, node_color=color_map)
         edge_labels3 = {(u, v): f"{G[u][v]['weight']:.1f} km" for u, v in final_graph.edges() if G.has_edge(u, v)}
