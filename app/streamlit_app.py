@@ -15,22 +15,24 @@ st.markdown("""
     <style>
     body {
         background-color: #f7f9fc;
+        color: #111111;
     }
     .stApp {
         background-color: #f7f9fc;
+        color: #111111;
     }
     .stRadio > div {
         flex-direction: row;
         justify-content: center;
     }
     h1, h2, h3, h4 {
-        color: #002855;
+        color: #111111;
     }
     .block-title {
         font-size: 20px;
         margin-top: 2rem;
         font-weight: bold;
-        color: #003566;
+        color: #111111;
     }
     .section {
         background-color: #ffffff;
@@ -38,6 +40,7 @@ st.markdown("""
         margin-bottom: 2rem;
         border-radius: 10px;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        color: #111111;
     }
     </style>
 """, unsafe_allow_html=True)
