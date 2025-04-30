@@ -89,7 +89,7 @@ Plan efficient routes to university with smart suggestions based on real distanc
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+        df = pd.read_csv("data/distance_matrix_km_cleaned.csv", index_col=0)
         return df
     except Exception as e:
         st.error(f"❌ Failed to load CSV: {e}")
