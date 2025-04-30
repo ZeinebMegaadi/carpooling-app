@@ -87,8 +87,12 @@ Plan efficient routes to university with smart suggestions based on real distanc
 
 # --- Load Distance Matrix ---
 
+@st.cache_data
 def load_data():
     return pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+
+if st.sidebar.button("🔁 Reload CSV"):
+    st.cache_data.clear()
 
 dist_df = load_data()
 students = dist_df.index.tolist()
