@@ -332,13 +332,15 @@ elif st.session_state.role == "Driver":
         st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
         final_graph = nx.Graph()
-    # Remove passenger button logic
-    for passenger in st.session_state.accepted[current_user]:
+    # Handle removal logic first
+    removed = False
+    for passenger in st.session_state.accepted[current_user][:]:
         if st.button(f"❌ Remove {passenger}", key=f"remove_{passenger}"):
             st.session_state.accepted[current_user].remove(passenger)
             st.success(f"{passenger} has been removed from your ride.")
+            removed = True
 
-    # Build final graph for only accepted passengers
+    # Then render the graph once (if any passengers remain)
     if st.session_state.accepted[current_user]:
         st.markdown("### 🗺️ Confirmed Carpool Group")
         fig3, ax3 = plt.subplots(figsize=(10, 8))
