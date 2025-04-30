@@ -337,12 +337,10 @@ elif st.session_state.role == "Driver":
         for p in st.session_state.accepted[current_user]:
             try:
                 path = nx.shortest_path(G, source=current_user, target=p, weight='weight')
-                if len(path) == 2 and G.has_edge(current_user, p):
-                    final_graph.add_edge(current_user, p, weight=G[current_user][p]['weight'])
-                else:
-                    # if not directly connected, still add as disconnected node to visualize
-                    final_graph.add_node(current_user)
-                    final_graph.add_node(p)
+                for i in range(len(path) - 1):
+                    u, v = path[i], path[i + 1]
+                    if G.has_edge(u, v):
+                        final_graph.add_edge(u, v, weight=G[u][v]['weight'])
             except nx.NetworkXNoPath:
                 st.warning(f"No path to {p}")
         color_map = ['red' if n == current_user else 'green' for n in final_graph.nodes()]
