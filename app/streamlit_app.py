@@ -13,6 +13,7 @@ st.set_page_config(page_title="Uni Carpooling", layout="wide")
 # --- Custom Styling ---
 st.markdown("""
     <style>
+
     body {
         background-color: #f7f9fc;
         color: #111111;
@@ -42,7 +43,20 @@ st.markdown("""
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
         color: #111111;
     }
-    </style>
+    
+/* Ensure button text is visible */
+button[kind="secondary"] div,
+button[kind="primary"] div,
+button div {
+    color: white !important;
+}
+/* Ensure radio labels are dark */
+.css-1a32fsj span,
+.css-16idsys span,
+.stRadio label {
+    color: #111111 !important;
+}
+</style>
 """, unsafe_allow_html=True)
 
 # --- Header ---
