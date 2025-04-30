@@ -96,6 +96,10 @@ def load_data():
         return pd.DataFrame()
 
 dist_df = load_data()
+# Clean headers in case of whitespace mismatches
+if not dist_df.empty:
+    dist_df.index = dist_df.index.str.strip()
+    dist_df.columns = dist_df.columns.str.strip()
 students = dist_df.index.tolist()
 
 # --- Session State ---
@@ -111,7 +115,7 @@ MAX_DIST = 7.0
 # --- Build Graph ---
 G_full = nx.DiGraph()
 for student in students:
-    dists = dist_df.loc[student].drop(student).apply(lambda x: max(x, MIN_DIST))
+    dists = dist_df.loc[student].drop(labels=[student], errors='ignore').apply(lambda x: max(x, MIN_DIST))
     nearest = dists.nsmallest(3)
     for neighbor, weight in nearest.items():
         G_full.add_edge(student, neighbor, weight=weight)
@@ -229,4 +233,5 @@ with st.sidebar:
             if key in st.session_state:
                 del st.session_state[key]
         st.experimental_rerun()
+
 
