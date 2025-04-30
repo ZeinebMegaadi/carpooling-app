@@ -172,7 +172,7 @@ if role == "Driver":
     st.markdown("<div class='block-title'>Suggested Riders</div>", unsafe_allow_html=True)
     driver = st.selectbox("Select your name:", students)
     if driver:
-        dists = dist_df.loc[driver].drop(driver).apply(lambda x: max(x, MIN_DIST))
+        dists = dist_df.loc[driver].drop(labels=[driver], errors='ignore').apply(lambda x: max(x, MIN_DIST))
         dists = dists[dists <= MAX_DIST]
         nearest = dists.nsmallest(3)
         accepted_riders = st.session_state.accepted_riders.setdefault(driver, [])
