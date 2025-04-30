@@ -259,8 +259,8 @@ st.title("🚗 SMU Carpooling App")
 
 current_user = st.selectbox("Select your name:", students)
 
-if st.session_state.role is None:
-    st.session_state.role = st.radio("Choose your role:", ["Driver", "Passenger"])
+if "role" not in st.session_state or st.session_state.role is None:
+    st.session_state.role = st.selectbox("Choose your role:", ["Driver", "Passenger"], index=0)
 
 random.seed(42)
 drivers = random.sample([s for s in students if s != current_user], min(7, len(students)-1))
