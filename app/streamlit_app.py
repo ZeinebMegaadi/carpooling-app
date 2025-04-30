@@ -19,7 +19,7 @@ st.markdown("""
         color: #111111;
     }
     .stApp {
-        background-color: #f7f9fc;
+        background-color: #A9A9A9;
         color: #111111;
     }
     .stRadio > div {
@@ -36,7 +36,7 @@ st.markdown("""
         color: #111111;
     }
     .section {
-        background-color: #ffffff;
+        background-color: #A9A9A9;
         padding: 1.5rem;
         margin-bottom: 2rem;
         border-radius: 10px;
