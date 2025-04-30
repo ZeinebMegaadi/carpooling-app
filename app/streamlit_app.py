@@ -69,7 +69,7 @@ Plan efficient routes to university with smart suggestions based on real distanc
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("data/distance_matrix_km.csv", index_col=0)
+        df = pd.read_csv("data/distance.csv", index_col=0)
         df.index = df.index.str.strip()
         df.columns = df.columns.str.strip()
         return df
