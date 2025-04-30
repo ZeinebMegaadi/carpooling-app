@@ -1,14 +1,12 @@
-# Carpooling Web App
+# SMU Carpooling Web App
 
-This is a university project that finds the shortest carpooling paths between students using their coordinates and a distance matrix.
+Hello Sir, This is a graph theory project that finds the shortest carpooling paths between students using their coordinates and a distance matrix made by Zeineb, Megaadi, Mariem Trabelse, Amira Almi and Mariem Belaaj.
 
 ## How to run
 
-- Upload the project to [streamlit.io](https://streamlit.io/cloud)
-- Set the app file path to: `app/streamlit_app.py`
-- Make sure the following files are included in the `data/` folder:
-  - `students_with_coordinates.csv`
-  - `distance_matrix_km.csv`
+open this link: https://carpooling-app-a4b4oocsbkekatpk6dah9l.streamlit.app/
+- The main file is this: `app/streamlit_app.py`
+
 
 ## Requirements
 Install with:
