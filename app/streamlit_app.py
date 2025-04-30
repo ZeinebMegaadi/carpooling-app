@@ -56,6 +56,10 @@ with st.expander("🔍 Full Student Graph (Closest Edges Only)"):
     nx.draw_networkx_edge_labels(G_full, pos_full, edge_labels=edge_labels, font_size=6, ax=ax_full)
     ax_full.set_axis_off()
     st.pyplot(fig_full)
+
+# --- Role Selection ---
+role = st.radio("I am a:", ["Driver", "Passenger"])
+
 # --- Display Shortest Path Tree Graph ---
 with st.expander("🧭 Shortest Path Tree Graph"):
     st.subheader("Shortest Path Tree from a Starting Student")
@@ -74,14 +78,19 @@ with st.expander("🧭 Shortest Path Tree Graph"):
 
         fig_spt, ax_spt = plt.subplots(figsize=(8, 8))
         pos_spt = nx.spring_layout(G_spt, seed=42)
-        nx.draw(G_spt, pos_spt, node_size=300, node_color='lightgreen', with_labels=True, font_size=8, ax=ax_spt)
+
+        node_colors = ['red' if node == selected else 'green' for node in G_spt.nodes()]
+        nx.draw(G_spt, pos_spt, node_size=300, node_color=node_colors, with_labels=True, font_size=8, ax=ax_spt)
         edge_labels = nx.get_edge_attributes(G_spt, 'weight')
         nx.draw_networkx_edge_labels(G_spt, pos_spt, edge_labels={k: f"{v:.2f}" for k, v in edge_labels.items()}, font_size=6, ax=ax_spt)
+
+        # Legend
+        red_patch = plt.Line2D([0], [0], marker='o', color='w', label='Driver (Red)', markerfacecolor='red', markersize=10)
+        green_patch = plt.Line2D([0], [0], marker='o', color='w', label='Passenger (Green)', markerfacecolor='green', markersize=10)
+        ax_spt.legend(handles=[red_patch, green_patch], loc='upper right')
+
         ax_spt.set_axis_off()
         st.pyplot(fig_spt)
-
-# --- Role Selection ---
-role = st.radio("I am a:", ["Driver", "Passenger"])
 
 # --- Driver Flow ---
 if role == "Driver":
