@@ -66,14 +66,14 @@ button div {
 
 /* Fix message colors */
 .css-1cpxqw2 {  /* st.success */
-    background-color: #d4edda !important;
-    color: #14532d !important;
-    font-weight: 600;
+    background-color: #14532d !important;
+    color: #ffffff !important;
+    font-weight: 700;
 }
 .css-1wivap2 {  /* st.warning used as decline */
-    background-color: #f8d7da !important;
-    color: #842029 !important;
-    font-weight: 600;
+    background-color: #842029 !important;
+    color: #ffffff !important;
+    font-weight: 700;
 }
 </style>
 """, unsafe_allow_html=True)
