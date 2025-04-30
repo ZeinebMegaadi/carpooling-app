@@ -263,7 +263,7 @@ if "role" not in st.session_state or st.session_state.role is None:
     st.session_state.role = st.selectbox("Choose your role:", ["Driver", "Passenger"], index=0)
 
 random.seed(42)
-drivers = random.sample([s for s in students if s != current_user], min(7, len(students)-1))
+drivers = random.sample([s for s in students if s != current_user and s not in ['Arij Aouina', 'Rania Ben Moussa', 'Ahmed Said Mohamed', 'Abidi Fares']], min(7, len(students)-1))
 
 # --------- GRAPH 1: everyone, 3 closest edges each ---------
 st.markdown("### 🌐 All Students: Each Connected to 3 Nearest Neighbors")
