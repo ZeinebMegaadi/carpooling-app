@@ -191,7 +191,7 @@ if role == "Driver":
                 G_route.add_edge(driver, r, weight=dist_df.at[driver, r])
             fig_route, ax_route = plt.subplots(figsize=(6, 6))
             pos_route = nx.spring_layout(G_route, seed=24)
-            node_colors = ['red'] + ['green'] * len(accepted_riders)
+            node_colors = ['#8B0000'] + ['#006400'] * len(accepted_riders)
             nx.draw(G_route, pos_route, node_size=400, node_color=node_colors,
                     with_labels=True, font_weight='bold', font_size=8, ax=ax_route)
             edge_labels = {(driver, r): f"{dist_df.at[driver, r]:.2f} km" for r in accepted_riders}
